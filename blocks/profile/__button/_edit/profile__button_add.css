@@ -1,0 +1,8 @@
+.profile__button_add {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  border-radius: 2px;
+  margin: auto 0;
+}
