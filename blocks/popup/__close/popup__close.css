@@ -7,9 +7,10 @@
   opacity: 0.6;
   cursor: pointer;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 500px) {
   .popup__close {
     width: 20px;
     height: 20px;
+    background-size: contain;
   }
 }

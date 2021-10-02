@@ -5,7 +5,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 13px;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 500px) {
   .form__item {
     min-width: 238px;
   }

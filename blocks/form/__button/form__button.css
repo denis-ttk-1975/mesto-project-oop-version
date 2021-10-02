@@ -15,7 +15,7 @@
   opacity: 0.8;
   cursor: pointer;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 500px) {
   .form__button {
     min-width: 238px;
     min-height: 46px;
