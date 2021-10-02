@@ -3,4 +3,14 @@
   height: 24px;
   border: solid 1px #fff;
   border-radius: 0;
+  margin: 5px 0 0 18px;
+  align-self: center;
+}
+@media screen and (max-width: 768px) {
+  .profile__button_edit {
+    width: 18px;
+    height: 18px;
+    margin: 0 0 0 10px;
+    order: 2;
+  }
 }

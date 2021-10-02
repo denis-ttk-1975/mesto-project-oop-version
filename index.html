@@ -12,13 +12,16 @@
       </header>
       <main class="content">
           <section class="profile">
-            <img class="profile__avavtar" src="./images/kusto_profile.svg" alt="Жак-Ив Кусто"> 
-            <div class="profile__info">
+            <div class="profile__main">
+              <img class="profile__avavtar" src="./images/kusto_profile.svg" alt="Жак-Ив Кусто"> 
+              <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
+                
                 <button class="profile__button profile__button_edit">
                   <img src="./images/Vector.svg" alt="редактировать">
                 </button>
                 <p class="profile__description">Исследователь океана</p>
+              </div>
             </div>
             <button class="profile__button profile__button_add">
               <img src="./images/profile__plus.svg" alt="добавить">
@@ -27,31 +30,65 @@
           <section class="places" aria-label="Фото">
             <div class="card">
               <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
-              <p class="card__description">Карачаевск</p>
+              <div class="card__caption">
+                <p class="card__description">Карачаевск</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
             <div class="card">
               <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
-              <p class="card__description">Гора Эльбрус</p>
+              <div class="card__caption">
+                <p class="card__description">Гора Эльбрус</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
             <div class="card">
               <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
-              <p class="card__description">Домбай</p>
+              <div class="card__caption">
+                <p class="card__description">Домбай</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
             <div class="card">
               <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
-              <p class="card__description">Гора Эльбрус</p>
+              <div class="card__caption">
+                <p class="card__description">Гора Эльбрус</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
             <div class="card">
               <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
-              <p class="card__description">Домбай</p>
+              <div class="card__caption">
+                <p class="card__description">Домбай</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
             <div class="card">
               <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
-              <p class="card__description">Карачаево-Ч...</p>
+              <div class="card__caption">
+                <p class="card__description">Карачаево-Черкессия</p>
+                <button class="card__like card__like_active"></button>
+              </div>
             </div>
           </section>
       </main>
       <footer class="footer">
         <p class="footer__autor">&copy; 2021 Mesto Russia</p>
-      </footer>
+      </footer>      
+</div>
+
+<div class="popup">
+  <div class="popup__container popup_opened">
+    <label class="popup__label">Редактировать профиль</label>
+    <form name="form" class="popup__form">
+      <fieldset class="form__name">
+        <input type="text" class="form__item" placeholder="Имя" value="Жак-Ив Кусто">
+      </fieldset>
+      <fieldset class="form__description">
+        <input type="text" class="form__item" placeholder="Описание" value="Исследователь океана">
+      </fieldset>
+        <button type="submit" class="form__button">Сохранить</button>
+    </form>
+  </div>
   </body>
+</html>
