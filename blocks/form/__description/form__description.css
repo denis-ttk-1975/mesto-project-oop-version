@@ -1,0 +1,10 @@
+.form__description {
+  border: 0;
+  padding: 0 36px;
+  margin: 30px 0 0;
+}
+@media screen and (max-width: 425px) {
+  .form__description {
+    padding: 0 22px;
+  }
+}
