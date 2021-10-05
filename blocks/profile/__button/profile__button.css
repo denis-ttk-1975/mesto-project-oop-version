@@ -1,5 +1,6 @@
 .profile__button {
     background-color: transparent;
+    padding: 0;
   }
   .profile__button:hover {
     transition: linear 0.2s;
