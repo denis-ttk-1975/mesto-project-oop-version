@@ -14,6 +14,7 @@
           <section class="profile">
             <div class="profile__main">
               <img class="profile__avatar" src="./images/kusto_profile.jpg" alt="Жак-Ив Кусто"> 
+            <template id="profile-template"></template>
               <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
                 <button class="profile__button profile__button_act_edit" type="button">
@@ -25,43 +26,45 @@
             </button>
           </section>
           <section class="places" aria-label="Фото">
+            <template id="card-template"></template>
             <div class="card">
-              <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
+              <button class="card__trash" type="button"></button>
+              <img class="card__image" src="./images/card_karachaevsk.jpg" alt="Карачаевск">
               <div class="card__caption">
                 <p class="card__description">Карачаевск</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
               </div>
             </div>
             <div class="card">
-              <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
+              <img class="card__image" src="./images/card_elbrus.jpg" alt="Гора Эльбрус">
               <div class="card__caption">
                 <p class="card__description">Гора Эльбрус</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
               </div>
             </div>
             <div class="card">
-              <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
+              <img class="card__image" src="./images/card_dombai.jpg" alt="Домбай">
               <div class="card__caption">
                 <p class="card__description">Домбай</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
               </div>
             </div>
             <div class="card">
-              <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
+              <img class="card__image" src="./images/card_elbrus.jpg" alt="Гора Эльбрус">
               <div class="card__caption">
                 <p class="card__description">Гора Эльбрус</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
               </div>
             </div>
             <div class="card">
-              <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
+              <img class="card__image" src="./images/card_dombai.jpg" alt="Домбай">
               <div class="card__caption">
                 <p class="card__description">Домбай</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
               </div>
             </div>
             <div class="card">
-              <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
+              <img class="card__image" src="./images/card_karachaevsk.jpg" alt="Карачаевск">
               <div class="card__caption">
                 <p class="card__description">Карачаево-Черкессия</p>
                 <button class="card__like card__like_pos_active" type="button"></button>
@@ -78,12 +81,13 @@
           <form name="form" class="form">
             <h2 class="form__label">Редактировать профиль</h2>
             <fieldset class="form__edit">
-              <input type="text" name="name" class="form__item" placeholder="Имя" value="Жак-Ив Кусто">
-              <input type="text" name="description" class="form__item" placeholder="Описание" value="Исследователь океана">
+              <input type="text" name="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто">
+              <input type="text" name="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана">
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
           </form>
         </div>
       </div>
+    <script src="./scripts/index.js"></script>
   </body>
 </html>
