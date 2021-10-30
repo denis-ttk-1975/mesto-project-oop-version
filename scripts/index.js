@@ -9,12 +9,12 @@ function addSong(nameValue, descriptionValue) {
   const profileElement = profileTemplate.querySelector('.profile__info').cloneNode(true);
 
   profileElement.querySelector('.profile__name').textContent = nameValue;
-  profileElement.querySelector('.song__title').textContent = descriptionValue;
+  profileElement.querySelector('.profile__description').textContent = descriptionValue;
   /*лайки*/
-  profileElement.querySelector('.song__like').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('song__like_active');
+  profileElement.querySelector('.card__like').addEventListener('click', function (evt) {
+    evt.target.classList.toggle('card__like_pos_active');
   });
-  songsContainer.append(profileElement);
+  places.append(profileElement);
 }
 
 addButton.addEventListener('click', function () {
