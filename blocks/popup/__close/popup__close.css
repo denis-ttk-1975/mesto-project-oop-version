@@ -1,6 +1,6 @@
 .popup__close {
   position: absolute;
-  top: -8px;
+  top: -40px;
   right: -40px;
   border: 0;
   padding: 0;
@@ -18,7 +18,7 @@
     width: 20px;
     height: 20px;
     background-size: contain;
-    top: 0;
+    top: -32px;
     right: 0;
   }
 }
