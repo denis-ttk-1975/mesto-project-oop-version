@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Место</title>
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="./pages/index.css" />
   </head>
   <body class="page">
@@ -14,6 +16,7 @@
           <section class="profile">
             <div class="profile__main">
               <img class="profile__avatar" src="./images/kusto_profile.jpg" alt="Жак-Ив Кусто"> 
+            <template id="profile-template"></template>
               <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
                 <button class="profile__button profile__button_act_edit" type="button">
@@ -24,66 +27,58 @@
             <button class="profile__button profile__button_act_add" type="button">
             </button>
           </section>
-          <section class="places" aria-label="Фото">
-            <div class="card">
-              <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
-              <div class="card__caption">
-                <p class="card__description">Карачаевск</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
-              <div class="card__caption">
-                <p class="card__description">Гора Эльбрус</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
-              <div class="card__caption">
-                <p class="card__description">Домбай</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card__image" src="./images/card_elbrus.svg" alt="Гора Эльбрус">
-              <div class="card__caption">
-                <p class="card__description">Гора Эльбрус</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card__image" src="./images/card_dombai.svg" alt="Домбай">
-              <div class="card__caption">
-                <p class="card__description">Домбай</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-            <div class="card">
-              <img class="card__image" src="./images/card_karachaevsk.svg" alt="Карачаевск">
-              <div class="card__caption">
-                <p class="card__description">Карачаево-Черкессия</p>
-                <button class="card__like card__like_pos_active" type="button"></button>
-              </div>
-            </div>
-          </section>
+          <section class="places" aria-label="Фото"></section>
       </main>
       <footer class="footer">
         <p class="footer__autor">&copy; 2021 Mesto Russia</p>
       </footer>
-      <div class="popup popup_opened">
+
+      <template id="card_template">
+        <div class="card">
+          <button class="card__trash" type="button"></button>
+          <img class="card__image">
+          <div class="card__caption">
+            <p class="card__description"></p>
+            <button class="card__like" type="button"></button>
+          </div>
+        </div>
+      </template>
+
+      <div class="popup">
         <div class="popup__container">
           <button class="popup__close" type="button"></button>
-          <form name="form" class="form">
+          <form name="form" class="form" id="profile">
             <h2 class="form__label">Редактировать профиль</h2>
             <fieldset class="form__edit">
-              <input type="text" name="name" class="form__item" placeholder="Имя" value="Жак-Ив Кусто">
-              <input type="text" name="description" class="form__item" placeholder="Описание" value="Исследователь океана">
+              <input type="text" name="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто">
+              <input type="text" name="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана">
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
           </form>
         </div>
       </div>
+      <div class="popup popup_type_add">
+        <div class="popup__container">
+          <button class="popup__close" type="button" id="close"></button>
+          <form name="form" class="form" id="location">
+            <h2 class="form__label">Новое место</h2>
+            <fieldset class="form__edit">
+              <input type="text" name="location" class="form__item form__item_type_location" placeholder="Название">
+              <input type="text" name="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку">
+            </fieldset>
+              <button type="submit" class="form__button" id="buttonAdd">Создать</button>
+          </form>
+        </div>
+      </div>
+      <div class="popup popup_type_image">
+        <div class="popup__container">
+          <button class="popup__close" type="button" id="active_img"></button>
+          <div class="popup__images">
+              <img class="popup__image">
+              <p class="popup__title"></p>
+          </div>
+        </div>
+      </div>
+    <script src="./scripts/index.js"></script>
   </body>
 </html>

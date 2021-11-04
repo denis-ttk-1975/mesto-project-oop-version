@@ -1,14 +1,10 @@
 .popup__container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   position: relative;
-  max-width: 470px; /*размеры вместе с крестиком*/
   min-height: 370px;
 }
 @media screen and (max-width: 530px) {
   .popup__container {
-    max-width: 282px;
+    /*max-width: 282px;*/
     min-height: 358px;
   }
 }
