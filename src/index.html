@@ -47,11 +47,13 @@
       <div class="popup popup_type_edit">
         <div class="popup__container">
           <button class="popup__close" type="button"></button>
-          <form name="form" class="form" id="profile">
+          <form name="form" class="form" id="profile" novalidate>
             <h2 class="form__label">Редактировать профиль</h2>
             <fieldset class="form__edit">
-              <input type="text" name="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто">
-              <input type="text" name="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана">
+              <input type="text" id="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто" minlength='1'>
+              <span class="form__item_type_error form__item_type_error-name" id="name-error"></span>
+              <input type="text" id="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана" minlength='5'>
+              <span class="form__item_type_error form__item_type_error-description" id="description-error"></span>
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
           </form>
@@ -60,11 +62,13 @@
       <div class="popup popup_type_add">
         <div class="popup__container">
           <button class="popup__close" type="button" id="close"></button>
-          <form name="form" class="form" id="location">
+          <form name="form" class="form" id="location" novalidate>
             <h2 class="form__label">Новое место</h2>
             <fieldset class="form__edit">
-              <input type="text" name="location" class="form__item form__item_type_location" placeholder="Название">
-              <input type="text" name="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку">
+              <input type="text" id="location" class="form__item form__item_type_location" placeholder="Название"minlength='2'>
+              <span class="form__item_type_error form__item_type_error-location" id="location-error">Вы пропустили это поле.</span>
+              <input type="url" id="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку" minlength='5'>
+              <span class="form__item_type_error form__item_type_error-link" id="link-error">Введите адрес сайта.</span>
             </fieldset>
               <button type="submit" class="form__button" id="buttonAdd">Создать</button>
           </form>
@@ -80,5 +84,6 @@
         </div>
       </div>
     <script src="./components/index.js"></script>
+    <script src="./components/validate.js"></script>
   </body>
 </html>
