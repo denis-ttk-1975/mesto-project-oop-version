@@ -65,9 +65,9 @@
           <form name="form" class="form" id="location" novalidate>
             <h2 class="form__label">Новое место</h2>
             <fieldset class="form__edit">
-              <input type="text" id="location" class="form__item form__item_type_location" placeholder="Название"minlength='2'>
+              <input type="text" id="location" class="form__item form__item_type_location" placeholder="Название" minlength='1'required>
               <span class="form__item_type_error form__item_type_error-location" id="location-error">Вы пропустили это поле.</span>
-              <input type="url" id="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку" minlength='5'>
+              <input type="url" id="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку" minlength='5' required>
               <span class="form__item_type_error form__item_type_error-link" id="link-error">Введите адрес сайта.</span>
             </fieldset>
               <button type="submit" class="form__button" id="buttonAdd">Создать</button>
