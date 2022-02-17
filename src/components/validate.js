@@ -76,4 +76,3 @@ const enableValidation = (validationConfig) => {
   });
 };
 enableValidation(validationConfig); //index.js
-
