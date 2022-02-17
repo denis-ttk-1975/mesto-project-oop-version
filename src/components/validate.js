@@ -1,54 +1,79 @@
+//функциональность валидации форм
+
 //объект настроек
 const validationConfig = {
   formSelector: '.form',
   inputSelector: '.form__item',
+  submitButtonSelector: '.form__button',
   errorClass: 'form__item_type_active',
   inputErrorClass:'form__input-error',
+  inactiveButtonClass: 'form__button_disabled',
 }
 //функця валидации полей - показать ошибку
-const showInputError = (inputElement, errorElement, errorMessage, config) => {
+const showInputError = (inputElement, errorElement, errorMessage, validationConfig) => {
   errorElement.textContent = errorMessage;
-  errorElement.classList.add(config.errorClass);
-  inputElement.classList.add(config.inputErrorClass);
+  errorElement.classList.add(validationConfig.errorClass);
+  inputElement.classList.add(validationConfig.inputErrorClass);
 };
 //функця валидации полей - скрыть ошибку
-const hideInputError = (inputElement, errorElement, config) => {
+const hideInputError = (inputElement, errorElement, validationConfig) => {
   errorElement.textContent = '';
-  errorElement.classList.remove(config.errorClass);
-  inputElement.classList.remove(config.inputErrorClass);
+  errorElement.classList.remove(validationConfig.errorClass);
+  inputElement.classList.remove(validationConfig.inputErrorClass);
 };
 //функция проверки валидности поля
-const isValid = (formElement, inputElement, config) => {
+const isValid = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(`.form__item_type_error-${inputElement.id}`);
   const isInputValid = inputElement.validity.valid;
   if (!isInputValid) {
     const errorMessage = inputElement.validationMessage;
-    showInputError(inputElement, errorElement, errorMessage, config);
+    showInputError(inputElement, errorElement, errorMessage, validationConfig);
   } else {
-    hideInputError(inputElement, errorElement, config);
+    hideInputError(inputElement, errorElement, validationConfig);
   }
 };
+//функция проверки наличия невалидного поля в форме
+const hasInvalidInput = (inputListArray) => {
+  return inputListArray.some((inputElement) => {
+    // Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся фунцкция вернёт true
+    return !inputElement.validity.valid;
+  });
+};
+
+// функция для дезактивации кнопки в форме
+const toggleButtonState = (inputListArray, buttonElement, validationConfig) => {
+  if (hasInvalidInput(inputListArray)) {
+    buttonElement.classList.add(validationConfig.inactiveButtonClass);
+    buttonElement.setAttribute('disabled', true);
+  } else {
+    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled');
+  };
+};
 //добавление полям формы обработчиков
-const setEventListeners = (formElement, config) => {
-  const inputList = formElement.querySelectorAll(config.inputSelector);
+const setEventListeners = (formElement, validationConfig) => {
+  const inputList = formElement.querySelectorAll(validationConfig.inputSelector);
   const inputListArray = Array.from(inputList);
-  //const submitButtonElement = formElement.querySelector(".form__button");
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector); //кнопка в форме
+  toggleButtonState(inputListArray, buttonElement, validationConfig);
   inputListArray.forEach(inputElement => {
     inputElement.addEventListener("input", () => {
-      isValid(formElement, inputElement, config);
+      isValid(formElement, inputElement, validationConfig);
+      toggleButtonState(inputListArray, buttonElement, validationConfig);
     });
   });
 };
 // включение валидации 
-const enableValidation = (config) => {
-  const formList = document.querySelectorAll(config.formSelector);
+const enableValidation = (validationConfig) => {
+  const formList = document.querySelectorAll(validationConfig.formSelector);
   const formListArray = Array.from(formList);
   const handFormSumit = (event) => {
     event.preventDefault();
   };
   formListArray.forEach(formElement => {
     formElement.addEventListener("submit", handFormSumit);
-    setEventListeners(formElement, config);
+    setEventListeners(formElement, validationConfig);
   });
 };
-enableValidation(validationConfig);
+enableValidation(validationConfig); //index.js
+

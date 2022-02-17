@@ -50,9 +50,9 @@
           <form name="form" class="form" id="profile" novalidate>
             <h2 class="form__label">Редактировать профиль</h2>
             <fieldset class="form__edit">
-              <input type="text" id="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто" minlength='1'>
+              <input type="text" id="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто" minlength='2' maxlength='40' required>
               <span class="form__item_type_error form__item_type_error-name" id="name-error"></span>
-              <input type="text" id="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана" minlength='5'>
+              <input type="text" id="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана" minlength='2' maxlength='200' required>
               <span class="form__item_type_error form__item_type_error-description" id="description-error"></span>
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
@@ -65,10 +65,10 @@
           <form name="form" class="form" id="location" novalidate>
             <h2 class="form__label">Новое место</h2>
             <fieldset class="form__edit">
-              <input type="text" id="location" class="form__item form__item_type_location" placeholder="Название" minlength='1'required>
-              <span class="form__item_type_error form__item_type_error-location" id="location-error">Вы пропустили это поле.</span>
-              <input type="url" id="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку" minlength='5' required>
-              <span class="form__item_type_error form__item_type_error-link" id="link-error">Введите адрес сайта.</span>
+              <input type="text" id="location" class="form__item form__item_type_location" placeholder="Название" minlength='2' maxlength='30' required>
+              <span class="form__item_type_error form__item_type_error-location" id="location-error"></span>
+              <input type="url" id="link" class="form__item form__item_type_link" placeholder="Ссылка на картинку" required>
+              <span class="form__item_type_error form__item_type_error-link" id="link-error"></span>
             </fieldset>
               <button type="submit" class="form__button" id="buttonAdd">Создать</button>
           </form>
