@@ -1,7 +1,7 @@
 //функциональность валидации форм
 
 //объект настроек
-const validationConfig = {
+export const validationConfig = {
   formSelector: '.form',
   inputSelector: '.form__item',
   submitButtonSelector: '.form__button',
@@ -64,7 +64,7 @@ const setEventListeners = (formElement, validationConfig) => {
   });
 };
 // включение валидации 
-const enableValidation = (validationConfig) => {
+export const enableValidation = (validationConfig) => {
   const formList = document.querySelectorAll(validationConfig.formSelector);
   const formListArray = Array.from(formList);
   const handFormSumit = (event) => {
@@ -75,4 +75,3 @@ const enableValidation = (validationConfig) => {
     setEventListeners(formElement, validationConfig);
   });
 };
-enableValidation(validationConfig); //index.js

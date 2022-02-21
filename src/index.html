@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Место</title>
-    <link rel="shortcut icon" href="./images/favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="shortcut icon" href="<%=require('./images/favicon.ico')%>" type="image/vnd.microsoft.icon">
   </head>
   <body class="page">
       <header class="header">
-        <img class="logo" src="./images/logo_header.svg" alt="Логотип Место">
+        <img class="logo" src="<%=require('./images/logo_header.svg')%>" alt="Логотип Место">
       </header>
       <main class="content">
           <section class="profile">
             <div class="profile__main">
-              <img class="profile__avatar" src="./images/kusto_profile.jpg" alt="Жак-Ив Кусто"> 
+              <img class="profile__avatar" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто"> 
             <template id="profile-template"></template>
               <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -83,8 +82,5 @@
           </div>
         </div>
       </div>
-    <script src="./components/index.js"></script>
-    <script src="./components/validate.js"></script>
-    <script src="./components/utils.js"></script>
   </body>
 </html>
