@@ -1,14 +1,5 @@
 //функциональность валидации форм
 
-//объект настроек
-export const validationConfig = {
-  formSelector: '.form',
-  inputSelector: '.form__item',
-  submitButtonSelector: '.form__button',
-  errorClass: 'form__item_type_active',
-  inputErrorClass:'form__input-error',
-  inactiveButtonClass: 'form__button_disabled',
-}
 //функця валидации полей - показать ошибку
 const showInputError = (inputElement, errorElement, errorMessage, validationConfig) => {
   errorElement.textContent = errorMessage;
@@ -41,7 +32,7 @@ const hasInvalidInput = (inputListArray) => {
 };
 
 // функция для дезактивации кнопки в форме
-const toggleButtonState = (inputListArray, buttonElement, validationConfig) => {
+export const toggleButtonState = (inputListArray, buttonElement, validationConfig) => {
   if (hasInvalidInput(inputListArray)) {
     buttonElement.classList.add(validationConfig.inactiveButtonClass);
     buttonElement.setAttribute('disabled', true);
