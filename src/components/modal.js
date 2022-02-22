@@ -1,31 +1,31 @@
 //работа модальных окон 
 import {closePopup} from './utils.js';
-import {popupEdit} from './card.js';
-export const formElementProfile = document.querySelector("#profile");
-const jobInput = formElementProfile.querySelector(".form__item_type_description");
-const nameInput = formElementProfile.querySelector(".form__item_type_name");
+import {popupEdit, jobInput, nameInput} from './constants.js';
+
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
+  if (event.key === "Escape") {
     const activePopup = document.querySelector(".popup_opened");
-    if (event.key === "Escape") {
-      closePopup(activePopup);
-    }
-  };
-  //функция закрытия попапа при клике на оверлей
-  export const popupAll = document.querySelectorAll(".popup");
-  export const handleClick = (event) => {
-    if (event.target === event.currentTarget) {
-      closePopup(event.currentTarget);
-    }
-  };
-  // функция редактирования профиля
-export function formSubmitEdit(event) {
+    closePopup(activePopup);
+  }
+};
+//функция закрытия попапа при клике на оверлей или крестик
+export const handleClick = (event) => {
+  if (event.target.classList.contains("popup_opened")) {
+    closePopup(event.currentTarget);
+  }
+  if (event.target.classList.contains("popup__close")) {
+    closePopup(event.currentTarget);
+  }
+};
+// функция редактирования профиля
+export function handleProfileFormSubmit(event) {
   event.preventDefault(); //отменяет стандартную отправку формы
-  const nameValue = nameInput.value;
-  const descriptionValue = jobInput.value;
   const profileName = document.querySelector(".profile__name");
-  const profileDescrip = document.querySelector(".profile__description");
+  const nameValue = nameInput.value;
   profileName.textContent = nameValue;
+  const profileDescrip = document.querySelector(".profile__description");
+  const descriptionValue = jobInput.value;
   profileDescrip.textContent = descriptionValue;
   closePopup(popupEdit);
 }
