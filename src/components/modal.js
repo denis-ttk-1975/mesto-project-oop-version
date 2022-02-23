@@ -1,6 +1,6 @@
 //работа модальных окон 
 import {closePopup} from './utils.js';
-import {popupEdit, jobInput, nameInput} from './constants.js';
+import {popupEdit, jobInput, nameInput, profileName, profileDescrip} from './constants.js';
 
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
@@ -21,10 +21,8 @@ export const handleClick = (event) => {
 // функция редактирования профиля
 export function handleProfileFormSubmit(event) {
   event.preventDefault(); //отменяет стандартную отправку формы
-  const profileName = document.querySelector(".profile__name");
   const nameValue = nameInput.value;
   profileName.textContent = nameValue;
-  const profileDescrip = document.querySelector(".profile__description");
   const descriptionValue = jobInput.value;
   profileDescrip.textContent = descriptionValue;
   closePopup(popupEdit);

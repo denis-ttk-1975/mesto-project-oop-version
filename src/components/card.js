@@ -1,11 +1,10 @@
 //функции для работы с карточками 
 import {closePopup, openPopup} from './utils.js';
 import {imageOpen, imageOpeninPopup, imageInPopup, inputElementLocation,
-  inputElementLink, formElementLocation, placeSection, popupAdd, validationConfig, initialCards} from './constants.js';
+  inputElementLink, formElementLocation, placeSection, popupAdd, validationConfig, initialCards, cardTemplate} from './constants.js';
 
 //функция создания карточки (возвращает созданную разметку карточки)
 export function cardCreate(cardName, cardLink) {
-    const cardTemplate = document.querySelector("#card_template").content;
     const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
     const cardImage = cardElement.querySelector(".card__image");
     cardImage.alt = cardName;

@@ -15,6 +15,9 @@ export const inputElementLink = formElementLocation.querySelector(".form__item_t
 export const formElementProfile = document.querySelector("#profile");
 export const jobInput = formElementProfile.querySelector(".form__item_type_description");
 export const nameInput = formElementProfile.querySelector(".form__item_type_name");
+export const profileName = document.querySelector(".profile__name");
+export const profileDescrip = document.querySelector(".profile__description");
+export const cardTemplate = document.querySelector("#card_template").content;
 
 //объект настроек
 export const validationConfig = {
