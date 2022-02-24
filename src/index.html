@@ -14,8 +14,13 @@
       <main class="content">
           <section class="profile">
             <div class="profile__main">
-              <img class="profile__avatar" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто"> 
-            <template id="profile-template"></template>
+            <!--  <img class="profile__avatar" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто"> -->
+            <button class="profile__button_act_avatar" type="button">
+             <img class="profile__image" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто">
+            </button>
+            <template id="profile_template">
+              
+            </template>
               <div class="profile__info">
                 <h1 class="profile__name">Жак-Ив Кусто</h1>
                 <button class="profile__button profile__button_act_edit" type="button">
@@ -80,6 +85,19 @@
               <img class="popup__image">
               <p class="popup__title"></p>
           </div>
+        </div>
+      </div>
+      <div class="popup popup_type_avatar">
+        <div class="popup__container">
+          <button class="popup__close" type="button"></button>
+          <form name="form" class="form form_type_avatar" id="avatar" novalidate>
+            <h2 class="form__label">Обновить аватар</h2>
+            <fieldset class="form__edit">
+              <input type="url" id="link-avatar" class="form__item form__item_type_avatar" required>
+              <span class="form__item_type_error form__item_type_error-link-avatar" id="link-avatar-error"></span>
+            </fieldset>
+              <button type="submit" class="form__button">Сохранить</button>
+          </form>
         </div>
       </div>
   </body>

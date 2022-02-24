@@ -2,8 +2,10 @@
 export const popups = document.querySelectorAll(".popup");
 export const popupEdit = document.querySelector('.popup_type_edit');
 export const popupAdd = document.querySelector(".popup_type_add");
+export const popupAvatar = document.querySelector(".popup_type_avatar");
 export const buttonEdit = document.querySelector(".profile__button");
 export const buttonAdd = document.querySelector(".profile__button_act_add");
+export const buttonAvatar = document.querySelector(".profile__button_act_avatar");
 export const imageOpen = document.querySelector(".popup_type_image");
 export const imageOpeninPopup = imageOpen.querySelector(".popup__title");
 export const imageInPopup = document.querySelector(".popup__image");

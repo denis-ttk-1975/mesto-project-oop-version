@@ -3,7 +3,7 @@ import {openPopup} from './utils.js';
 import {handleClick, handleProfileFormSubmit} from './modal.js';
 import {enableValidation} from './validate.js';
 import {cardsList, addCard} from './card.js';
-import {buttonEdit, buttonAdd,
+import {buttonEdit, buttonAdd, buttonAvatar, popupAvatar,
   formElementLocation, popups, popupAdd, popupEdit, formElementProfile, validationConfig} from './constants.js';
 
 // открыть попап редактирования профиля
@@ -13,6 +13,10 @@ buttonEdit.addEventListener("click", function () {
 //открыть попап для добавления карточки
 buttonAdd.addEventListener("click", function () {
   openPopup(popupAdd)
+});
+//открыть попап для редактирования фото профиля
+buttonAvatar.addEventListener("click", function () {
+  openPopup(popupAvatar)
 });
 //обработчик функции редактирования профиля
 formElementProfile.addEventListener("submit", handleProfileFormSubmit);
@@ -25,3 +29,4 @@ popups.forEach(function (popup) {
 
 cardsList();
 enableValidation(validationConfig);
+
