@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   max-width: 246px;
-  margin: 25px 0 32px 21px;
+  margin: 22px 0 22px 21px;
 }
 @media screen and (max-width: 425px) {
   .places {

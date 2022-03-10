@@ -1,31 +1,46 @@
-//работа модальных окон 
-import {closePopup} from './utils.js';
-import {popupEdit} from './card.js';
-export const formElementProfile = document.querySelector("#profile");
-const jobInput = formElementProfile.querySelector(".form__item_type_description");
-const nameInput = formElementProfile.querySelector(".form__item_type_name");
+//работа модальных окон
+import { closePopup, getLoader } from "./utils.js";
+import {popupEdit, jobInput, nameInput, profileName,
+    profileDescrip, popupConfidence, profileImage, avatarInput,
+    formElementAvatar, buttonProfile} from "./constants.js";
+import { patchProfile, patchAvatar } from "./api.js";
+
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
+  if (event.key === "Escape") {
     const activePopup = document.querySelector(".popup_opened");
-    if (event.key === "Escape") {
-      closePopup(activePopup);
-    }
-  };
-  //функция закрытия попапа при клике на оверлей
-  export const popupAll = document.querySelectorAll(".popup");
-  export const handleClick = (event) => {
-    if (event.target === event.currentTarget) {
-      closePopup(event.currentTarget);
-    }
-  };
-  // функция редактирования профиля
-export function formSubmitEdit(event) {
-  event.preventDefault(); //отменяет стандартную отправку формы
-  const nameValue = nameInput.value;
-  const descriptionValue = jobInput.value;
-  const profileName = document.querySelector(".profile__name");
-  const profileDescrip = document.querySelector(".profile__description");
-  profileName.textContent = nameValue;
-  profileDescrip.textContent = descriptionValue;
-  closePopup(popupEdit);
+    closePopup(activePopup);
+  }
+};
+//функция закрытия попапа при клике на оверлей или крестик
+export const handleClick = (event) => {
+  if (event.target.classList.contains("popup_opened")) {
+    closePopup(event.currentTarget);
+  }
+  if (event.target.classList.contains("popup__close")) {
+    closePopup(event.currentTarget);
+  }
+};
+// функция редактирования профиля
+export function handleProfileFormSubmit(event) {
+  event.preventDefault();
+  patchProfile(nameInput.value, jobInput.value)
+    .then((result) => {
+      profileName.textContent = result.name;
+      profileDescrip.textContent = result.about;
+      getLoader(buttonProfile);
+      closePopup(popupEdit);
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
+}
+// функция редактирования аватара
+export function handleAvatarSubmit(event) {
+  event.preventDefault();
+  patchAvatar(avatarInput.value)
+    .then((result) => {
+      profileImage.src = result.avatar;
+      formElementAvatar.reset();
+      closePopup(popupConfidence);
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
 }
