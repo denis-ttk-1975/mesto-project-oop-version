@@ -9,3 +9,11 @@ export function openPopup(popup) {
   popup.classList.add("popup_opened");
   window.addEventListener('keydown', handleEscDown);
 }
+//функция для загрузки
+export function getLoader(button) {
+  button.textContent = "Сохранение...";
+}
+//функция после завершения загрузки
+export function deleteLoader(button) {
+  button.textContent = "Сохранить";
+}

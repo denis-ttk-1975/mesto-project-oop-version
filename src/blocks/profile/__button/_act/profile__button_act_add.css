@@ -9,7 +9,6 @@
   background-image: url("../../../../images/profile__plus.svg");
   background-repeat: no-repeat;
   background-position: center;
-  
 }
 @media screen and (max-width: 768px) {
   .profile__button_act_add {
