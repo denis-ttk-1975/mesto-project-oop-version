@@ -14,9 +14,8 @@
       <main class="content">
           <section class="profile">
             <div class="profile__main">
-            <!--  <img class="profile__avatar" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто"> -->
-            <button class="profile__button_act_avatar" type="button">
-             <img class="profile__image" src="<%=require('./images/kusto_profile.jpg')%>" alt="Жак-Ив Кусто">
+            <button class="profile__button_act_avatar">
+            <img class="profile__image" src="<%=require('./images/kusto_profile.jpg')%>">
             </button>
             <template id="profile_template">
               
@@ -43,7 +42,10 @@
           <img class="card__image">
           <div class="card__caption">
             <p class="card__description"></p>
-            <button class="card__like" type="button"></button>
+            <div class="card__likes">
+              <button class="card__like" type="button"></button>
+              <p class="card__like-counter"></p>
+            </div>
           </div>
         </div>
       </template>
@@ -54,9 +56,9 @@
           <form name="form" class="form" id="profile" novalidate>
             <h2 class="form__label">Редактировать профиль</h2>
             <fieldset class="form__edit">
-              <input type="text" id="name" class="form__item form__item_type_name" placeholder="Имя" value="Жак-Ив Кусто" minlength='2' maxlength='40' required>
+              <input type="text" id="name" class="form__item form__item_type_name" placeholder="Имя" minlength='2' maxlength='40' required>
               <span class="form__item_type_error form__item_type_error-name" id="name-error"></span>
-              <input type="text" id="description" class="form__item form__item_type_description" placeholder="Описание" value="Исследователь океана" minlength='2' maxlength='200' required>
+              <input type="text" id="description" class="form__item form__item_type_description" placeholder="Описание" minlength='2' maxlength='200' required>
               <span class="form__item_type_error form__item_type_error-description" id="description-error"></span>
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
@@ -93,10 +95,19 @@
           <form name="form" class="form form_type_avatar" id="avatar" novalidate>
             <h2 class="form__label">Обновить аватар</h2>
             <fieldset class="form__edit">
-              <input type="url" id="link-avatar" class="form__item form__item_type_avatar" required>
+              <input type="url" id="link-avatar" class="form__item form__item_type_avatar" placeholder="Ссылка на картинку" required>
               <span class="form__item_type_error form__item_type_error-link-avatar" id="link-avatar-error"></span>
             </fieldset>
               <button type="submit" class="form__button">Сохранить</button>
+          </form>
+        </div>
+      </div>
+      <div class="popup popup_remove-card">
+        <div class="popup__container">
+          <button class="popup__close" type="button"></button>
+          <form name="form" class="form form_type_remove-card" id="remove-card" novalidate>
+            <h2 class="form__label">Вы уверены?</h2>
+            <button type="submit" class="form__button">Да</button>
           </form>
         </div>
       </div>

@@ -1,5 +1,5 @@
 .card__image {
-  background-size: contain;
+  object-fit: cover;
   height: 282px;
   width: 282px;
   margin: 0;
