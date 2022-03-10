@@ -25,7 +25,7 @@ export const buttonProfile = popupEdit.querySelector('.form__button');
 export const buttonAvatarPhoto = popupAvatar.querySelector('.form__button');
 export const formElementAvatar = document.querySelector(".form_type_avatar");
 export const avatarInput = formElementAvatar.querySelector(".form__item_type_avatar");
-export const popupConfidence = document.querySelector(".popup_remove-card");
+export const popupConfidence = document.querySelector(".popup__remove-card");
 export const formConfidence = popupConfidence.querySelector(".form_type_remove-card");
 
 //объект настроек
