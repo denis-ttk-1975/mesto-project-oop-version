@@ -1,8 +1,10 @@
 //функции для работы с карточками
-import { closePopup, openPopup } from "./utils.js";
-import {imageOpen, imageOpeninPopup, imageInPopup, inputElementLocation,
-  inputElementLink, formElementLocation, placeSection, popupAdd, validationConfig, cardTemplate} from './constants.js';
-import { deleteLikeOnCard, putLikeOnCard, deleteCard, postNewCard, userId } from "./api.js";
+import { closePopup, openPopup, renderLoading } from "./utils.js";
+import {imageOpen, imageOpeninPopup, imageInPopup, popupAdd, popupConfidence,
+  inputElementLocation, inputElementLink, formElementLocation, formConfidence,
+  validationConfig, placeSection, cardTemplate, buttonFormAdd} from './constants.js';
+import { deleteLikeOnCard, putLikeOnCard, deleteCard, postNewCard } from "./api.js";
+import { userId } from "./index.js";
 
 //функция создания карточки (возвращает созданную разметку карточки)
 export function cardCreate(cardName, cardLink, cardData) {
@@ -17,12 +19,6 @@ export function cardCreate(cardName, cardLink, cardData) {
   cardLikeCounter.textContent = cardData.likes.length;
   //слушатель на лайк
   const cardLike = cardElement.querySelector(".card__like");
-  cardLike.addEventListener("click", function (event) {
-    event.target.classList.toggle("card__like_pos_active");
-  });
-  if (cardData.likes.some((userThatLiked) => userThatLiked._id == userId)) {
-    cardLike.classList.add("card__like_pos_active");
-  }
   //слушатель на удаление/обозначение лайка
   cardLike.addEventListener("click", (event) => {
     if (cardData.likes.some((userThatLiked) => userThatLiked._id == userId)) {
@@ -30,7 +26,7 @@ export function cardCreate(cardName, cardLink, cardData) {
         .then((card) => {
           cardData = card;
           cardLikeCounter.textContent = card.likes.length;
-          event.target.classList.remove("card__like_pos_active");
+          event.target.classList.toggle("card__like_pos_active");
         })
         .catch((error) => console.log(`Ошибка: ${error}`));
     } else {
@@ -48,12 +44,17 @@ export function cardCreate(cardName, cardLink, cardData) {
   if (cardData.owner._id !== userId) {
     cardTrash.remove();
   }
-  cardTrash.addEventListener("click", function (event) {
-    deleteCard(cardData._id)
-      .then(() => {
-        event.target.closest(".card").remove();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+  cardTrash.addEventListener("click", function () {
+    openPopup(popupConfidence);
+    formConfidence.addEventListener("submit", function removeCard () {
+      deleteCard(cardData._id)
+        .then(() => {
+          cardElement.remove();
+          closePopup(popupConfidence);
+          formConfidence.removeEventListener("submit", removeCard)
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`));
+    });
   });
   cardImage.addEventListener("click", function (event) {
     imageOpeninPopup.textContent = event.target.alt;
@@ -74,7 +75,7 @@ export function addCard(event) {
   event.preventDefault();
   const locationValue = inputElementLocation.value;
   const linkValue = inputElementLink.value;
-  const buttonFormAdd = popupAdd.querySelector(validationConfig.submitButtonSelector);
+  renderLoading(true, buttonFormAdd);
   postNewCard(locationValue, linkValue)
     .then((card) => {
       renderCard(card, placeSection);
@@ -83,5 +84,8 @@ export function addCard(event) {
       formElementLocation.reset(); //очистить форму
       closePopup(popupAdd);
     })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      renderLoading(false, buttonFormAdd);
+    })
 }

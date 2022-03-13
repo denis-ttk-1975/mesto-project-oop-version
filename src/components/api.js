@@ -1,6 +1,12 @@
-import { apiConfig, profileName, profileDescrip, profileImage } from "./constants.js";
+const apiConfig = {
+  baseURL: "https://nomoreparties.co/v1/plus-cohort7",
+  headers: {
+    authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
+    "Content-Type": "application/json",
+  },
+};
 //функция проверки ответа сервера на запрос
-export function checkError(res) {
+export function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
@@ -8,17 +14,15 @@ export function checkError(res) {
 }
 //функция получения данных о карточках
 export const getInitialCards = () => {
-  //return fetch(`${apiConfig.baseUrl}/cards`, {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort7/cards`, {
+  return fetch(`${apiConfig.baseURL}/cards`, {
     headers: apiConfig.headers,
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция получения данных пользователя
 export const getUserInfo = () => {
-  //return fetch(`${apiConfig.baseUrl}/users/me`, {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort7/users/me`, {
+  return fetch(`${apiConfig.baseURL}/users/me`, {
     headers: apiConfig.headers,
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция для получения/редактирования данных профиля
 export const patchProfile = (name, about) => {
@@ -29,17 +33,17 @@ export const patchProfile = (name, about) => {
       name: name,
       about: about,
     }),
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция для получения/редактирования фото аватара
 export const patchAvatar = (avatar) => {
-  return fetch(`${apiConfig.baseURL}/users/me`, {
+  return fetch(`${apiConfig.baseURL}/users/me/avatar`, {
     method: "PATCH",
     headers: apiConfig.headers,
     body: JSON.stringify({
       avatar: avatar,
     }),
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция добавления новой карточки
 export const postNewCard = (name, link) => {
@@ -50,34 +54,26 @@ export const postNewCard = (name, link) => {
       name: name,
       link: link,
     }),
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция удаления новой карточки
 export const deleteCard = (card) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort7/cards/${card}`, {
+  return fetch(`${apiConfig.baseURL}/cards/${card}`, {
     method: "DELETE",
     headers: apiConfig.headers,
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция для обозначения лайка
 export const putLikeOnCard = (card) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort7/cards/likes/${card}`, {
+  return fetch(`${apiConfig.baseURL}/cards/likes/${card}`, {
     method: "PUT",
     headers: apiConfig.headers,
-  }).then(checkError);
+  }).then(checkResponse);
 };
 //функция для удаления лайка
 export const deleteLikeOnCard = (card) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort7/cards/likes/${card}`, {
+  return fetch(`${apiConfig.baseURL}/cards/likes/${card}`, {
     method: "DELETE",
     headers: apiConfig.headers,
-  }).then(checkError);
-};
-//функция обновления информации о профиле
-export let userId;
-export function updateUserInfo(info) {
-  userId = info._id;
-  profileName.textContent = info.name;
-  profileDescrip.textContent = info.about;
-  profileImage.src = info.avatar;
+  }).then(checkResponse);
 };
