@@ -1,8 +1,8 @@
 //работа модальных окон
-import { closePopup, getLoader } from "./utils.js";
-import {popupEdit, jobInput, nameInput, profileName,
-    profileDescrip, popupConfidence, profileImage, avatarInput,
-    formElementAvatar, buttonProfile} from "./constants.js";
+import { closePopup, renderLoading } from "./utils.js";
+import {popupEdit, popupAvatar, jobInput, nameInput, avatarInput,
+  profileName, profileDescrip, profileImage, 
+  formElementAvatar, buttonProfile, buttonAvatarPhoto} from "./constants.js";
 import { patchProfile, patchAvatar } from "./api.js";
 
 //функция закрытия попапа при нажатии ESC
@@ -24,23 +24,31 @@ export const handleClick = (event) => {
 // функция редактирования профиля
 export function handleProfileFormSubmit(event) {
   event.preventDefault();
+  renderLoading(true, buttonProfile);
   patchProfile(nameInput.value, jobInput.value)
     .then((result) => {
       profileName.textContent = result.name;
       profileDescrip.textContent = result.about;
-      getLoader(buttonProfile);
       closePopup(popupEdit);
     })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() =>{
+      renderLoading(false, buttonProfile);
+    })
 }
 // функция редактирования аватара
 export function handleAvatarSubmit(event) {
   event.preventDefault();
+  renderLoading(true, buttonAvatarPhoto);
   patchAvatar(avatarInput.value)
     .then((result) => {
       profileImage.src = result.avatar;
+      closePopup(popupAvatar);
       formElementAvatar.reset();
-      closePopup(popupConfidence);
     })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() =>{
+      renderLoading(false, buttonAvatarPhoto);
+    })
+    
 }

@@ -1,35 +1,28 @@
 import '../pages/index.css';
-import {openPopup, closePopup, deleteLoader, getLoader} from './utils.js';
+import {openPopup} from './utils.js';
 import {handleClick, handleProfileFormSubmit, handleAvatarSubmit} from './modal.js';
 import {enableValidation} from './validate.js';
 import {addCard, renderCard} from './card.js';
-import {buttonEdit, buttonAdd, buttonAvatar, popupAvatar,
-  formElementLocation, popups, popupAdd, popupEdit, formElementProfile, validationConfig,
-  placeSection, buttonProfile, buttonAvatarPhoto, popupConfidence, formConfidence} from './constants.js';
-import { getInitialCards, getUserInfo, updateUserInfo } from './api.js'
+import {buttonEdit, buttonAdd, buttonAvatar,
+  popupAvatar, popups, popupAdd, popupEdit,
+  formElementProfile, formElementLocation, formElementAvatar,
+  validationConfig, placeSection,  profileName, profileDescrip, profileImage} from './constants.js';
+import { getInitialCards, getUserInfo } from './api.js'
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
-  deleteLoader(buttonProfile);
-  openPopup(popupEdit)
+  openPopup(popupEdit);
 });
 //открыть попап для добавления карточки
 buttonAdd.addEventListener("click", function () {
-  openPopup(popupAdd)
+  openPopup(popupAdd);
 });
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
-  deleteLoader(buttonAvatarPhoto);
   openPopup(popupAvatar);
 });
 //обработчик функции редактирования аватара
-buttonAvatarPhoto.addEventListener("click", function () {
-  getLoader(buttonAvatarPhoto);
-  closePopup(popupAvatar);
-  openPopup(popupConfidence); //открыть попап с уточняющим вопросом
-});
-//обработчик функции редактирования аватара после уточняющего вопроса
-formConfidence.addEventListener("submit", function (event) {
+formElementAvatar.addEventListener("submit", function (event) {
   handleAvatarSubmit(event);
 });
 //обработчик функции редактирования профиля
@@ -44,6 +37,14 @@ popups.forEach(function (popup) {
 });
 //активация валидации
 enableValidation(validationConfig);
+//функция обновления информации о профиле
+export let userId;
+function updateUserInfo(info) {
+  userId = info._id;
+  profileName.textContent = info.name;
+  profileDescrip.textContent = info.about;
+  profileImage.src = info.avatar;
+};
 //загрузка данных
 const promises = [getInitialCards(), getUserInfo()]
   Promise.all(promises)
