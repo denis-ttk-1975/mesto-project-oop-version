@@ -1,75 +1,57 @@
 //функции для работы с карточками
-import { closePopup, openPopup, renderLoading } from "./utils.js";
-import {imageOpen, imageOpeninPopup, imageInPopup, popupAdd, popupConfidence,
-  inputElementLocation, inputElementLink, formElementLocation, formConfidence,
+import { closePopup, renderLoading} from "./utils.js";
+import {popupAdd,
+  inputElementLocation, inputElementLink, formElementLocation,
   validationConfig, placeSection, cardTemplate, buttonFormAdd} from './constants.js';
-import { deleteLikeOnCard, putLikeOnCard, deleteCard, postNewCard } from "./api.js";
-import { userId } from "./index.js";
+import { deleteLikeOnCard, putLikeOnCard, postNewCard } from "./api.js";
+import { openPopupConfidence, openPopupImage } from "./modal.js";
 
 //функция создания карточки (возвращает созданную разметку карточки)
-export function cardCreate(cardName, cardLink, cardData) {
+export function cardCreate(card, userId) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
-  cardImage.alt = cardName;
-  cardImage.src = cardLink;
   const cardDescription = cardElement.querySelector(".card__description");
-  cardDescription.textContent = cardName;
-  //счетчик лайков
-  const cardLikeCounter = cardElement.querySelector(".card__like-counter");
-  cardLikeCounter.textContent = cardData.likes.length;
-  //слушатель на лайк
   const cardLike = cardElement.querySelector(".card__like");
-  //слушатель на удаление/обозначение лайка
-  cardLike.addEventListener("click", (event) => {
-    if (cardData.likes.some((userThatLiked) => userThatLiked._id == userId)) {
-      deleteLikeOnCard(cardData._id)
+  const cardLikeCounter = cardElement.querySelector(".card__like-counter"); //счетчик лайков
+  cardImage.alt = card.name;
+  cardImage.src = card.link;
+  cardDescription.textContent = card.name;
+  cardElement.id = card._id;
+  cardLikeCounter.textContent = card.likes.length; //счетчик лайков
+  //слушатель на лайк
+  cardLike.addEventListener("click", () => {
+    if (cardLike.classList.contains("card__like_pos_active")) {
+      deleteLikeOnCard(card._id)
         .then((card) => {
-          cardData = card;
           cardLikeCounter.textContent = card.likes.length;
-          event.target.classList.toggle("card__like_pos_active");
+          cardLike.classList.remove("card__like_pos_active");
         })
         .catch((error) => console.log(`Ошибка: ${error}`));
     } else {
-      putLikeOnCard(cardData._id)
+      putLikeOnCard(card._id)
         .then((card) => {
-          cardData = card;
           cardLikeCounter.textContent = card.likes.length;
-          event.target.classList.add("card__like_pos_active");
+          cardLike.classList.add("card__like_pos_active");
         })
         .catch((error) => console.log(`Ошибка: ${error}`));
     }
   });
   //слушатель на удаление карточки
   const cardTrash = cardElement.querySelector(".card__trash");
-  if (cardData.owner._id !== userId) {
+  if (card.owner._id !== userId) {
     cardTrash.remove();
   }
-  cardTrash.addEventListener("click", function () {
-    openPopup(popupConfidence);
-    formConfidence.addEventListener("submit", function removeCard () {
-      deleteCard(cardData._id)
-        .then(() => {
-          cardElement.remove();
-          closePopup(popupConfidence);
-          formConfidence.removeEventListener("submit", removeCard)
-        })
-        .catch((error) => console.log(`Ошибка: ${error}`));
-    });
-  });
-  cardImage.addEventListener("click", function (event) {
-    imageOpeninPopup.textContent = event.target.alt;
-    imageInPopup.alt = event.target.alt;
-    imageInPopup.src = event.target.src;
-    openPopup(imageOpen); //открыть попап с картинкой
-  });
+  //слушатель на удаление карточки
+  cardTrash.addEventListener("click", () => openPopupConfidence(card._id));
+  //слушатель на открытие попапа самой карточки
+  cardImage.addEventListener("click", openPopupImage);
   return cardElement;
 }
 // функция добавления карточки в разметку
-export function renderCard(cardData, section) {
-  const cardName = cardData.name;
-  const cardLink = cardData.link;
-  section.prepend(cardCreate(cardName, cardLink, cardData));
-}
+export function renderCard(card, userId, section) {
+  section.prepend(cardCreate(card, userId));
+};
+
 //функция добавления карточки
 export function addCard(event) {
   event.preventDefault();
@@ -77,8 +59,8 @@ export function addCard(event) {
   const linkValue = inputElementLink.value;
   renderLoading(true, buttonFormAdd);
   postNewCard(locationValue, linkValue)
-    .then((card) => {
-      renderCard(card, placeSection);
+    .then((result) => {
+      renderCard(result, result.owner._id, placeSection);
       buttonFormAdd.disabled = true;
       buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
       formElementLocation.reset(); //очистить форму
