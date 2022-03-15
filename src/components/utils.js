@@ -17,3 +17,11 @@ export function renderLoading(isLoading, button) {
     button.textContent = "Сохранить";
   }
 }
+//функция удаления
+export function renderRemoving(isRemoving, button) {
+  if (isRemoving) {
+    button.textContent = "Удаление...";
+  } else {
+    button.textContent = "Да";
+  }
+}

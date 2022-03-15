@@ -1,9 +1,10 @@
 //работа модальных окон
-import { closePopup, renderLoading } from "./utils.js";
+import { closePopup, openPopup, renderLoading, renderRemoving } from "./utils.js";
 import {popupEdit, popupAvatar, jobInput, nameInput, avatarInput,
   profileName, profileDescrip, profileImage, 
-  formElementAvatar, buttonProfile, buttonAvatarPhoto} from "./constants.js";
-import { patchProfile, patchAvatar } from "./api.js";
+  formElementAvatar, buttonProfile, buttonAvatarPhoto, validationConfig,
+  popupConfidence, formConfidence, buttonConfidence, imageOpen, imageOpeninPopup, imageInPopup} from "./constants.js";
+import { patchProfile, patchAvatar, deleteCard } from "./api.js";
 
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
@@ -21,6 +22,12 @@ export const handleClick = (event) => {
     closePopup(event.currentTarget);
   }
 };
+// функция открытия попапа редактирования профиля с начальными данными
+export function openProfilePopup() {
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileDescrip.textContent;
+  openPopup(popupEdit);
+}
 // функция редактирования профиля
 export function handleProfileFormSubmit(event) {
   event.preventDefault();
@@ -45,10 +52,38 @@ export function handleAvatarSubmit(event) {
       profileImage.src = result.avatar;
       closePopup(popupAvatar);
       formElementAvatar.reset();
+      buttonAvatarPhoto.disabled = true;
+      buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass)
     })
     .catch((error) => console.log(`Ошибка: ${error}`))
     .finally(() =>{
       renderLoading(false, buttonAvatarPhoto);
     })
-    
 }
+//функция удаления карточки по конкретному ID
+export function removeCard() {
+    const cardId = formConfidence.value;
+    const card = document.getElementById(`${cardId}`);
+    renderRemoving(true, buttonConfidence);
+    deleteCard(cardId)
+      .then(() => {
+        card.remove();
+        closePopup(popupConfidence);
+      })
+      .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+      .finally(() => {
+        renderRemoving(false, buttonConfidence);
+      });
+}
+//открыть попап для подтверждения удаления и удалить карту
+export function openPopupConfidence(cardId) {
+  formConfidence.value = cardId;
+  buttonConfidence.addEventListener("click", removeCard);
+  openPopup(popupConfidence);
+}
+export function openPopupImage (event) {
+  imageOpeninPopup.textContent = event.target.alt;
+  imageInPopup.alt = event.target.alt;
+  imageInPopup.src = event.target.src;
+  openPopup(imageOpen);
+};
