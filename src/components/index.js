@@ -1,13 +1,17 @@
 import '../pages/index.css';
-import {openPopup} from './utils.js';
-import {handleClick, handleProfileFormSubmit, handleAvatarSubmit, openProfilePopup} from './modal.js';
-import {enableValidation} from './validate.js';
-import {addCard, renderCard} from './card.js';
-import {buttonEdit, buttonAdd, buttonAvatar,
-  popupAvatar, popups, popupAdd,
-  formElementProfile, formElementLocation, formElementAvatar,
-  validationConfig, placeSection,  profileName, profileDescrip, profileImage} from './constants.js';
-import { getInitialCards, getUserInfo } from './api.js'
+// import {openPopup} from './utils.js';
+// import {handleClick, handleProfileFormSubmit, handleAvatarSubmit, openProfilePopup} from './modal.js';
+// import {enableValidation} from './validate.js';
+// import {addCard, renderCard} from './card.js';
+// import {buttonEdit, buttonAdd, buttonAvatar,
+//   popupAvatar, popups, popupAdd,
+//   formElementProfile, formElementLocation, formElementAvatar,
+//   validationConfig, placeSection,  profileName, profileDescrip, profileImage} from './constants.js';
+import { Api } from './api.js'
+
+const api = new Api();
+
+console.log(api.getInitialCards())
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
