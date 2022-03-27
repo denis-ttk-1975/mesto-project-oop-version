@@ -14,7 +14,7 @@ export class Api {
   //функция проверки ответа сервера на запрос
   _checkResponse(res) {
     if (res.ok) return res.json()
-  
+
     return Promise.reject(`Ошибка: ${res.status}`)
   }
 
@@ -106,6 +106,8 @@ const apiConfig = {
     "Content-Type": "application/json",
   },
 };
+
+//TODO удалить
 //функция проверки ответа сервера на запрос
 export function checkResponse(res) {
   if (res.ok) {
