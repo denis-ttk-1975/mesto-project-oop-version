@@ -18,7 +18,7 @@ export class FormValidator {
     return this._validationStatus
   }
 
-  //Мгновенная валидация формы. См. комментарии в index.js
+  //Мгновенная валидация формы
   validate() {
     this._inputs.forEach(inputElement => {
         this._isValid(inputElement)
