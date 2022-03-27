@@ -28,27 +28,27 @@ export class FormValidator {
 
   //функця валидации полей - показать ошибку
   _showInputError(inputElement, errorElement, errorMessage) {
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._validationConfig.errorClass);
-    inputElement.classList.add(this._validationConfig.inputErrorClass);
-  };
+    errorElement.textContent = errorMessage
+    errorElement.classList.add(this._validationConfig.errorClass)
+    inputElement.classList.add(this._validationConfig.inputErrorClass)
+  }
 
   //функця валидации полей - скрыть ошибку
   _hideInputError(inputElement, errorElement) {
-    errorElement.textContent = '';
-    errorElement.classList.remove(this._validationConfig.errorClass);
-    inputElement.classList.remove(this._validationConfig.inputErrorClass);
+    errorElement.textContent = ''
+    errorElement.classList.remove(this._validationConfig.errorClass)
+    inputElement.classList.remove(this._validationConfig.inputErrorClass)
   }
 
   //функция проверки валидности поля
   _isValid(inputElement) {
-  const errorElement = this._form.querySelector(`.form__item_type_error-${inputElement.id}`);
+  const errorElement = this._form.querySelector(`.form__item_type_error-${inputElement.id}`)
     if (!inputElement.validity.valid) {
-      const errorMessage = inputElement.validationMessage;
-      this._showInputError(inputElement, errorElement, errorMessage);
+      const errorMessage = inputElement.validationMessage
+      this._showInputError(inputElement, errorElement, errorMessage)
 
     } else {
-      this._hideInputError(inputElement, errorElement);
+      this._hideInputError(inputElement, errorElement)
 
     }
   }
@@ -57,7 +57,7 @@ export class FormValidator {
   _hasInvalidInput(inputListArray) {
     return inputListArray.some((inputElement) => {
       // Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся фунцкция вернёт true
-      return !inputElement.validity.valid;
+      return !inputElement.validity.valid
     })
   }
 
@@ -80,8 +80,8 @@ export class FormValidator {
   _setEventListeners() {
     this._inputs.forEach(inputElement => {
       inputElement.addEventListener("input", () => {
-        this._isValid(inputElement);
-        this._toggleButtonState();
+        this._isValid(inputElement)
+        this._toggleButtonState()
       })
     })
   }
@@ -89,10 +89,10 @@ export class FormValidator {
   //включение валидации на форме
   enableValidation() {
     const handFormSumit = (event) => {
-      event.preventDefault();
-    };
+      event.preventDefault()
+    }
 
-    this._form.addEventListener("submit", handFormSumit);
-    this._setEventListeners();
+    this._form.addEventListener("submit", handFormSumit)
+    this._setEventListeners()
   }
 }
