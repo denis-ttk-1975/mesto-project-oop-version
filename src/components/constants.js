@@ -6,17 +6,20 @@ export const buttonProfile = popupEdit.querySelector('.form__button');
 export const formElementProfile = popupEdit.querySelector(".form");
 export const jobInput = formElementProfile.querySelector(".form__item_type_description");
 export const nameInput = formElementProfile.querySelector(".form__item_type_name");
+export const editProfileFormFieldSet = popupEdit.querySelector('.form__edit');
 //попап добавления карточки и его элементы
 export const popupAdd = document.querySelector(".popup_type_add");
 export const buttonFormAdd = popupAdd.querySelector('.form__button');
 export const formElementLocation = popupAdd.querySelector(".form");
 export const inputElementLocation = formElementLocation.querySelector(".form__item_type_location");
 export const inputElementLink = formElementLocation.querySelector(".form__item_type_link");
+export const addCardFormFieldSet = popupAdd.querySelector('.form__edit');
 //попап редактирования аватара и его элементы
 export const popupAvatar = document.querySelector(".popup_type_avatar");
 export const buttonAvatarPhoto = popupAvatar.querySelector('.form__button');
 export const formElementAvatar = popupAvatar.querySelector(".form_type_avatar");
 export const avatarInput = formElementAvatar.querySelector(".form__item_type_avatar");
+export const avatarFormFieldSet = popupAvatar.querySelector('.form__edit');
 //попап подтверждения удаления карточки и его элементы
 export const popupConfidence = document.querySelector(".popup__remove-card");
 export const buttonConfidence = popupConfidence.querySelector('.form__button');
@@ -31,7 +34,7 @@ export const buttonEdit = document.querySelector(".profile__button_act_edit");
 export const buttonAdd = document.querySelector(".profile__button_act_add");
 export const buttonAvatar = document.querySelector(".profile__button_act_avatar");
 //секция с карточками
-export const placeSection = document.querySelector(".places"); 
+export const placeSection = document.querySelector(".places");
 //элемент карточки
 export const cardTemplate = document.querySelector("#card_template").content;
 //элементы профиля
