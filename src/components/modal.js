@@ -1,10 +1,34 @@
 //работа модальных окон
-import { closePopup, openPopup, renderLoading, renderRemoving } from "./utils.js";
-import {popupEdit, popupAvatar, jobInput, nameInput, avatarInput,
-  profileName, profileDescrip, profileImage, 
-  formElementAvatar, buttonProfile, buttonAvatarPhoto, validationConfig,
-  popupConfidence, formConfidence, buttonConfidence, imageOpen, imageOpeninPopup, imageInPopup} from "./constants.js";
+import {
+  closePopup,
+  openPopup,
+  renderLoading,
+  renderRemoving,
+} from "./utils.js";
+import {
+  popupEdit,
+  popupAvatar,
+  jobInput,
+  nameInput,
+  avatarInput,
+  profileName,
+  profileDescrip,
+  profileImage,
+  formElementAvatar,
+  buttonProfile,
+  buttonAvatarPhoto,
+  validationConfig,
+  popupConfidence,
+  formConfidence,
+  buttonConfidence,
+  imageOpen,
+  imageOpeninPopup,
+  imageInPopup,
+} from "./constants.js";
 import { patchProfile, patchAvatar, deleteCard } from "./api.js";
+import { Api } from "./api.js";
+
+const api = new Api();
 
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
@@ -39,9 +63,9 @@ export function handleProfileFormSubmit(event) {
       closePopup(popupEdit);
     })
     .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() =>{
+    .finally(() => {
       renderLoading(false, buttonProfile);
-    })
+    });
 }
 // функция редактирования аватара
 export function handleAvatarSubmit(event) {
@@ -53,27 +77,27 @@ export function handleAvatarSubmit(event) {
       closePopup(popupAvatar);
       formElementAvatar.reset();
       buttonAvatarPhoto.disabled = true;
-      buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass)
+      buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass);
     })
     .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() =>{
+    .finally(() => {
       renderLoading(false, buttonAvatarPhoto);
-    })
+    });
 }
 //функция удаления карточки по конкретному ID
 export function removeCard() {
-    const cardId = formConfidence.value;
-    const card = document.getElementById(`${cardId}`);
-    renderRemoving(true, buttonConfidence);
-    deleteCard(cardId)
-      .then(() => {
-        card.remove();
-        closePopup(popupConfidence);
-      })
-      .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
-      .finally(() => {
-        renderRemoving(false, buttonConfidence);
-      });
+  const cardId = formConfidence.value;
+  const card = document.getElementById(`${cardId}`);
+  renderRemoving(true, buttonConfidence);
+  deleteCard(cardId)
+    .then(() => {
+      card.remove();
+      closePopup(popupConfidence);
+    })
+    .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+    .finally(() => {
+      renderRemoving(false, buttonConfidence);
+    });
 }
 //открыть попап для подтверждения удаления и удалить карту
 export function openPopupConfidence(cardId) {
@@ -81,9 +105,32 @@ export function openPopupConfidence(cardId) {
   buttonConfidence.addEventListener("click", removeCard);
   openPopup(popupConfidence);
 }
-export function openPopupImage (event) {
+export function openPopupImage(event) {
   imageOpeninPopup.textContent = event.target.alt;
   imageInPopup.alt = event.target.alt;
   imageInPopup.src = event.target.src;
   openPopup(imageOpen);
-};
+}
+//!! Денис Улесов переписываю функции для внедрения в колл-бэк удаления карточки
+//функция удаления карточки по конкретному ID
+export function removeCardNew(cardId) {
+  // const card = document.getElementById(`${cardId}`);
+  renderRemoving(true, buttonConfidence);
+  api
+    ._deleteCard(cardId)
+    .then(() => {
+      this._element.remove();
+      closePopup(popupConfidence);
+    })
+    .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+    .finally(() => {
+      renderRemoving(false, buttonConfidence);
+    });
+}
+//открыть попап для подтверждения удаления и удалить карту
+export function openPopupConfidenceNew(cardId) {
+  buttonConfidence.addEventListener("click", function () {
+    removeCardNew(cardId);
+  });
+  openPopup(popupConfidence);
+}
