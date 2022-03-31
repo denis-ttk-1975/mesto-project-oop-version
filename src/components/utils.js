@@ -1,3 +1,5 @@
+import { imageInPopup, imageOpeninPopup, imageOpen } from "./constants.js";
+
 //утилитарные функции
 import { Api } from "./api.js";
 const api = new Api();
@@ -68,4 +70,9 @@ export function trashHandler() {
   openPopupConfidenceNew(this._id);
 }
 //функция клика на самой картинке для открытия попапа самой карточки
-export function imageClickHandler() {}
+export function imageClickHandler() {
+  imageOpeninPopup.textContent = this._name;
+  imageInPopup.alt = this._name;
+  imageInPopup.src = this._link;
+  openPopup(imageOpen);
+}
