@@ -38,10 +38,14 @@ export const placeSection = document.querySelector(".places");
 //элемент карточки
 export const cardTemplate = document.querySelector("#card_template").content;
 //элементы профиля
-export const profileName = document.querySelector(".profile__name");
-export const profileDescrip = document.querySelector(".profile__description");
-export const profileImage = document.querySelector(".profile__image");
-
+export const profileName = document.querySelector(".profile__name"); //ЗАМЕНА на profileSelectors
+export const profileDescrip = document.querySelector(".profile__description"); //ЗАМЕНА на profileSelectors
+export const profileImage = document.querySelector(".profile__image"); //ЗАМЕНА на profileSelectors
+export const profileSelectors = {
+  nameSelector: '.profile__name',
+  aboutSelector: '.profile__description',
+  avatarSelector: '.profile__image',
+}
 //объект настроек
 export const validationConfig = {
     formSelector: '.form',

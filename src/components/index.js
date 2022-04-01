@@ -4,9 +4,10 @@ import {handleClick, handleProfileFormSubmit, handleAvatarSubmit, openProfilePop
 import {addCard, renderCard} from './card.js';
 import {buttonEdit, buttonAdd, buttonAvatar, popupAvatar, popups, popupAdd, formElementProfile, formElementLocation,
   formElementAvatar, addCardFormFieldSet, avatarFormFieldSet,
-  validationConfig, placeSection,  profileName, profileDescrip, profileImage, editProfileFormFieldSet} from './constants.js';
+  validationConfig, placeSection,  profileSelectors, editProfileFormFieldSet} from './constants.js';
 import { getInitialCards, getUserInfo } from './api.js'
 import { FormValidator } from './formValidator.js';
+import { UserInfo } from './UserInfo.js';
 
 const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet)
 editProfileForm.enableValidation()
@@ -44,22 +45,17 @@ formElementLocation.addEventListener("submit", addCard);
 popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);
 });
-//активация валидации
-//функция обновления информации о профиле
-let userId;
-function updateUserInfo(info) {
-  userId = info._id;
-  profileName.textContent = info.name;
-  profileDescrip.textContent = info.about;
-  profileImage.src = info.avatar;
-};
+
+const infoUser = new UserInfo(profileSelectors)
 //загрузка данных
 const promises = [getInitialCards(), getUserInfo()]
   Promise.all(promises)
   .then(([cards, userData]) => {
-    updateUserInfo(userData);
+    infoUser.setUserInfo(userData) //метод экземпляра класса UserInfo для обновления информации о профиле
     cards.reverse().forEach(card => {
       renderCard(card, userData._id, placeSection);
     });
   })
   .catch(err => console.log(`Ошибка загрузки данных: ${err}`))
+
+  
