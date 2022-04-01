@@ -8,30 +8,32 @@ export class Api {
         authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
         "Content-Type": "application/json",
       },
-    }
+    };
   }
 
   //функция проверки ответа сервера на запрос
   _checkResponse(res) {
-    if (res.ok) return res.json()
+    // console.log(res.status);
+    // debugger;
+    if (res.ok) {
+      return res.json();
+    }
 
-    return Promise.reject(`Ошибка: ${res.status}`)
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
 
   //функция получения данных о карточках
   getInitialCards() {
     return fetch(`${this._apiConfig.baseURL}/cards`, {
       headers: this._apiConfig.headers,
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция получения данных пользователя
   getUserInfo() {
     return fetch(`${this._apiConfig.baseURL}/users/me`, {
       headers: this._apiConfig.headers,
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция для получения/редактирования данных профиля
@@ -43,8 +45,7 @@ export class Api {
         name: name,
         about: about,
       }),
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция для получения/редактирования фото аватара
@@ -55,8 +56,7 @@ export class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция добавления новой карточки
@@ -68,8 +68,7 @@ export class Api {
         name: name,
         link: link,
       }),
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция удаления новой карточки
@@ -77,8 +76,7 @@ export class Api {
     return fetch(`${this._apiConfig.baseURL}/cards/${card}`, {
       method: "DELETE",
       headers: this._apiConfig.headers,
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция для обозначения лайка
@@ -86,8 +84,7 @@ export class Api {
     return fetch(`${this._apiConfig.baseURL}/cards/likes/${card}`, {
       method: "PUT",
       headers: this._apiConfig.headers,
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
   //функция для удаления лайка
@@ -95,8 +92,7 @@ export class Api {
     return fetch(`${this._apiConfig.baseURL}/cards/likes/${card}`, {
       method: "DELETE",
       headers: this._apiConfig.headers,
-    })
-    .then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 }
 const apiConfig = {

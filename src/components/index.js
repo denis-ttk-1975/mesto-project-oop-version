@@ -1,25 +1,57 @@
-import '../pages/index.css';
-import {openPopup} from './utils.js';
-import {handleClick, handleProfileFormSubmit, handleAvatarSubmit, openProfilePopup} from './modal.js';
-import {addCard, renderCard} from './card.js';
-import {buttonEdit, buttonAdd, buttonAvatar, popupAvatar, popups, popupAdd, formElementProfile, formElementLocation,
-  formElementAvatar, addCardFormFieldSet, avatarFormFieldSet,
-  validationConfig, placeSection,  profileName, profileDescrip, profileImage, editProfileFormFieldSet} from './constants.js';
-import { getInitialCards, getUserInfo } from './api.js'
-import { FormValidator } from './formValidator.js';
+import "../pages/index.css";
+import { openPopup } from "./utils.js";
+import {
+  handleClick,
+  handleProfileFormSubmit,
+  handleAvatarSubmit,
+  openProfilePopup,
+} from "./modal.js";
+import { addCard, renderCard } from "./card.js";
+import {
+  buttonEdit,
+  buttonAdd,
+  buttonAvatar,
+  popupAvatar,
+  popups,
+  popupAdd,
+  formElementProfile,
+  formElementLocation,
+  formElementAvatar,
+  addCardFormFieldSet,
+  avatarFormFieldSet,
+  validationConfig,
+  placeSectionSelector,
+  profileName,
+  profileDescrip,
+  profileImage,
+  editProfileFormFieldSet,
+  cardTemplate,
+  cardTemplateSelector,
+} from "./constants.js";
+import { getInitialCards, getUserInfo } from "./api.js";
+import { FormValidator } from "./formValidator.js";
+import { Api } from "./api.js";
+import { Card } from "./cardClass.js";
+import { likeHandler, trashHandler, imageClickHandler } from "./utils.js";
+import { Section } from "./section.js";
 
-const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet)
-editProfileForm.enableValidation()
+const api = new Api();
 
-const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet)
-addCardForm.enableValidation()
+const editProfileForm = new FormValidator(
+  validationConfig,
+  editProfileFormFieldSet
+);
+editProfileForm.enableValidation();
 
-const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet)
-avatarForm.enableValidation()
+const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet);
+addCardForm.enableValidation();
+
+const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
+avatarForm.enableValidation();
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
-  openProfilePopup()
+  openProfilePopup();
   editProfileForm.validate();
 });
 //открыть попап для добавления карточки
@@ -52,14 +84,35 @@ function updateUserInfo(info) {
   profileName.textContent = info.name;
   profileDescrip.textContent = info.about;
   profileImage.src = info.avatar;
-};
+}
 //загрузка данных
-const promises = [getInitialCards(), getUserInfo()]
-  Promise.all(promises)
+
+const promises = [api.getInitialCards(), getUserInfo()];
+Promise.all(promises)
   .then(([cards, userData]) => {
     updateUserInfo(userData);
-    cards.reverse().forEach(card => {
-      renderCard(card, userData._id, placeSection);
-    });
+
+    const section = new Section(
+      {
+        items: cards,
+        renderer: function (element, userId) {
+          const cardElement = new Card(element, userId, cardTemplateSelector, {
+            likeHandler,
+            trashHandler,
+            imageClickHandler,
+          });
+
+          return cardElement.generate();
+        },
+      },
+      placeSectionSelector
+    );
+
+    section.renderAll(userData._id);
+
+    // cards.reverse().forEach((card) => {
+    //   renderCard(card, userData._id, placeSection);
+    //   const cardElement = new Card();
+    // });
   })
-  .catch(err => console.log(`Ошибка загрузки данных: ${err}`))
+  .catch((err) => console.log(`Ошибка загрузки данных: ${err}`));

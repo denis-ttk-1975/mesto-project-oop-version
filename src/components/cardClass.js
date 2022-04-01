@@ -45,11 +45,15 @@ export class Card {
     this._element.querySelector(".card__like").addEventListener("click", () => {
       this._likeHandler();
     });
-    this._element
-      .querySelector(".card__trash")
-      .addEventListener("click", () => {
-        this._trashHandler();
-      });
+
+    if (this._element.querySelector(".card__trash")) {
+      this._element
+        .querySelector(".card__trash")
+        .addEventListener("click", () => {
+          this._trashHandler();
+        });
+    }
+
     this._element
       .querySelector(".card__image")
       .addEventListener("click", () => {

@@ -43,7 +43,7 @@ export function likeHandler() {
       .classList.contains("card__like_pos_active")
   ) {
     api
-      ._deleteLikeOnCard(this._id)
+      .deleteLikeOnCard(this._id)
       .then((data) => {
         this._element.querySelector(".card__like-counter").textContent =
           data.likes.length;
@@ -54,7 +54,7 @@ export function likeHandler() {
       .catch((error) => console.log(`Ошибка: ${error}`));
   } else {
     api
-      ._putLikeOnCard(this._id)
+      .putLikeOnCard(this._id)
       .then((data) => {
         this._element.querySelector(".card__like-counter").textContent =
           data.likes.length;

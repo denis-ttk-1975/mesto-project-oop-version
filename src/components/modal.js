@@ -114,15 +114,21 @@ export function openPopupImage(event) {
 //!! Денис Улесов переписываю функции для внедрения в колл-бэк удаления карточки
 //функция удаления карточки по конкретному ID
 export function removeCardNew(cardId) {
-  // const card = document.getElementById(`${cardId}`);
-  renderRemoving(true, buttonConfidence);
+  const cardForDelete = document.getElementById(`${cardId}`);
+  // console.log(cardForDelete);
+  // console.log(api.deleteCard(cardId));
+  // renderRemoving(true, buttonConfidence);
+  // debugger;
   api
-    ._deleteCard(cardId)
+    .deleteCard(cardId)
     .then(() => {
-      this._element.remove();
+      cardForDelete.remove();
+
       closePopup(popupConfidence);
     })
-    .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+    .catch((error) => {
+      console.log(`Ошибка при удалении карточки: ${error}`);
+    })
     .finally(() => {
       renderRemoving(false, buttonConfidence);
     });
@@ -131,6 +137,7 @@ export function removeCardNew(cardId) {
 export function openPopupConfidenceNew(cardId) {
   buttonConfidence.addEventListener("click", function () {
     removeCardNew(cardId);
+    console.log(cardId);
   });
   openPopup(popupConfidence);
 }
