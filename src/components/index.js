@@ -98,6 +98,7 @@ popups.forEach(function (popup) {
 // }
 
 const infoUser = new UserInfo(profileSelectors);
+console.log("infoUser: ", infoUser);
 
 //загрузка данных
 
@@ -105,6 +106,7 @@ const promises = [api.getInitialCards(), api.getUserInfo()];
 Promise.all(promises)
   .then(([cards, userData]) => {
     infoUser.setUserInfo(userData); //метод экземпляра класса UserInfo для обновления информации о профиле
+    console.log("infoUser: ", infoUser);
 
     const section = new Section(
       {
