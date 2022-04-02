@@ -8,9 +8,6 @@ export class Section {
 
   //добавляет все карточки в контейнер
   renderAll(userId) {
-    // this._itemsInfo = this._itemsInfo.map((element) =>
-    //   this.container.append(this._renderer(element, userId))
-    // );
     this.container.innerHTML = "";
     this._itemsInfo.forEach((element) => {
       this.container.append(this._renderer(element, userId));

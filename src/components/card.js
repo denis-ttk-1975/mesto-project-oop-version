@@ -1,10 +1,20 @@
 //функции для работы с карточками
-import { closePopup, renderLoading} from "./utils.js";
-import {popupAdd,
-  inputElementLocation, inputElementLink, formElementLocation,
-  validationConfig, placeSection, cardTemplate, buttonFormAdd} from './constants.js';
+import { closePopup, renderLoading } from "./utils.js";
+import {
+  popupAdd,
+  inputElementLocation,
+  inputElementLink,
+  formElementLocation,
+  validationConfig,
+  placeSection,
+  cardTemplate,
+  buttonFormAdd,
+} from "./constants.js";
 import { deleteLikeOnCard, putLikeOnCard, postNewCard } from "./api.js";
-import { openPopupConfidence, openPopupImage } from "./modal.js";
+import {
+  // openPopupConfidence,
+  openPopupImage,
+} from "./modal.js";
 
 //функция создания карточки (возвращает созданную разметку карточки)
 export function cardCreate(card, userId) {
@@ -50,7 +60,7 @@ export function cardCreate(card, userId) {
 // функция добавления карточки в разметку
 export function renderCard(card, userId, section) {
   section.prepend(cardCreate(card, userId));
-};
+}
 
 //функция добавления карточки
 export function addCard(event) {
@@ -69,5 +79,5 @@ export function addCard(event) {
     .catch((error) => console.log(`Ошибка: ${error}`))
     .finally(() => {
       renderLoading(false, buttonFormAdd);
-    })
+    });
 }
