@@ -27,6 +27,8 @@ import {
   editProfileFormFieldSet,
   cardTemplate,
   cardTemplateSelector,
+  placeSection,
+  profileSelectors,
 } from "./constants.js";
 import { getInitialCards, getUserInfo } from "./api.js";
 import { FormValidator } from "./formValidator.js";
@@ -39,6 +41,7 @@ import {
   addCardNew,
 } from "./utils.js";
 import { Section } from "./section.js";
+import { UserInfo } from "./UserInfo.js";
 
 const api = new Api();
 
@@ -83,21 +86,25 @@ formElementLocation.addEventListener("submit", addCardNew);
 popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);
 });
+
 //активация валидации
 //функция обновления информации о профиле
-let userId;
-function updateUserInfo(info) {
-  userId = info._id;
-  profileName.textContent = info.name;
-  profileDescrip.textContent = info.about;
-  profileImage.src = info.avatar;
-}
+// let userId;
+// function updateUserInfo(info) {
+//   userId = info._id;
+//   profileName.textContent = info.name;
+//   profileDescrip.textContent = info.about;
+//   profileImage.src = info.avatar;
+// }
+
+const infoUser = new UserInfo(profileSelectors);
+
 //загрузка данных
 
 const promises = [api.getInitialCards(), getUserInfo()];
 Promise.all(promises)
   .then(([cards, userData]) => {
-    updateUserInfo(userData);
+    infoUser.setUserInfo(userData); //метод экземпляра класса UserInfo для обновления информации о профиле
 
     const section = new Section(
       {
