@@ -82,6 +82,19 @@ export function likeHandler() {
 //функция клика на Trash
 export function trashHandler() {
   openPopupConfidenceNew(this._id);
+  // api
+  //   .deleteCard(this._id)
+  //   .then(() => {
+  //     this._element.remove();
+  //     debugger;
+  //   })
+  //   .catch((error) => {
+  //     debugger;
+  //     console.log(`Ошибка при удалении карточки: ${error}`);
+  //   })
+  //   .finally(() => {
+  //     debugger;
+  //   });
 }
 //функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {

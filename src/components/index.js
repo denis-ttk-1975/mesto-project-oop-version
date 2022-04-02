@@ -101,7 +101,7 @@ const infoUser = new UserInfo(profileSelectors);
 
 //загрузка данных
 
-const promises = [api.getInitialCards(), getUserInfo()];
+const promises = [api.getInitialCards(), api.getUserInfo()];
 Promise.all(promises)
   .then(([cards, userData]) => {
     infoUser.setUserInfo(userData); //метод экземпляра класса UserInfo для обновления информации о профиле
