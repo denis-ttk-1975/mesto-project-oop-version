@@ -1,7 +1,21 @@
-import { imageInPopup, imageOpeninPopup, imageOpen } from "./constants.js";
+import {
+  imageInPopup,
+  imageOpeninPopup,
+  imageOpen,
+  inputElementLocation,
+  inputElementLink,
+  buttonFormAdd,
+  formElementLocation,
+  validationConfig,
+  popupAdd,
+  cardTemplateSelector,
+  placeSectionSelector,
+} from "./constants.js";
 
 //утилитарные функции
 import { Api } from "./api.js";
+import { Section } from "./section.js";
+import { Card } from "./cardClass.js";
 const api = new Api();
 
 import { openPopupConfidenceNew } from "./modal.js";
@@ -75,4 +89,45 @@ export function imageClickHandler() {
   imageInPopup.alt = this._name;
   imageInPopup.src = this._link;
   openPopup(imageOpen);
+}
+
+// Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
+export function addCardNew(event) {
+  event.preventDefault();
+  const locationValue = inputElementLocation.value;
+  const linkValue = inputElementLink.value;
+  renderLoading(true, buttonFormAdd);
+  api
+    .postNewCard(locationValue, linkValue)
+    .then((result) => {
+      const section = new Section(
+        {
+          items: [],
+          renderer: function (element, userId) {
+            const cardElement = new Card(
+              element,
+              userId,
+              cardTemplateSelector,
+              {
+                likeHandler,
+                trashHandler,
+                imageClickHandler,
+              }
+            );
+            return cardElement.generate();
+          },
+        },
+        placeSectionSelector
+      );
+      section.addItem(result, result.owner._id);
+      // renderCard(result, result.owner._id, placeSection);
+      buttonFormAdd.disabled = true;
+      buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
+      formElementLocation.reset(); //очистить форму
+      closePopup(popupAdd);
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      renderLoading(false, buttonFormAdd);
+    });
 }

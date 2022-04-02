@@ -32,7 +32,12 @@ import { getInitialCards, getUserInfo } from "./api.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
 import { Card } from "./cardClass.js";
-import { likeHandler, trashHandler, imageClickHandler } from "./utils.js";
+import {
+  likeHandler,
+  trashHandler,
+  imageClickHandler,
+  addCardNew,
+} from "./utils.js";
 import { Section } from "./section.js";
 
 const api = new Api();
@@ -71,7 +76,9 @@ formElementProfile.addEventListener("submit", (event) => {
   handleProfileFormSubmit(event);
 });
 //обработчик функции добавления карточки
-formElementLocation.addEventListener("submit", addCard);
+// formElementLocation.addEventListener("submit", addCard);
+formElementLocation.addEventListener("submit", addCardNew);
+
 //обработчик закрытия попапа при клике на оверлей или крестик
 popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);

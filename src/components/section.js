@@ -11,6 +11,7 @@ export class Section {
     // this._itemsInfo = this._itemsInfo.map((element) =>
     //   this.container.append(this._renderer(element, userId))
     // );
+    this.container.innerHTML = "";
     this._itemsInfo.forEach((element) => {
       this.container.append(this._renderer(element, userId));
     });
@@ -18,7 +19,7 @@ export class Section {
 
   //Добавляет дом-элемент в контейнер
   addItem(element, userId) {
-    this.container.append(this._renderer(element, userId));
+    this.container.prepend(this._renderer(element, userId));
   }
 
   //Добавлят информацию о карточках
