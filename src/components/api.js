@@ -13,11 +13,7 @@ export class Api {
 
   //функция проверки ответа сервера на запрос
   _checkResponse(res) {
-    // console.log(res.status);
-    // debugger;
     if (res.ok) {
-      console.log(res.status);
-      debugger;
       return res.json();
     }
 
@@ -158,12 +154,12 @@ export const postNewCard = (name, link) => {
   }).then(checkResponse);
 };
 //функция удаления новой карточки
-// export const deleteCard = (card) => {
-//   return fetch(`${apiConfig.baseURL}/cards/${card}`, {
-//     method: "DELETE",
-//     headers: apiConfig.headers,
-//   }).then(checkResponse);
-// };
+export const deleteCard = (card) => {
+  return fetch(`${apiConfig.baseURL}/cards/${card}`, {
+    method: "DELETE",
+    headers: apiConfig.headers,
+  }).then(checkResponse);
+};
 //функция для обозначения лайка
 export const putLikeOnCard = (card) => {
   return fetch(`${apiConfig.baseURL}/cards/likes/${card}`, {

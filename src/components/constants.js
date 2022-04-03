@@ -58,10 +58,10 @@ export const profileName = document.querySelector(".profile__name"); //ЗАМЕ�
 export const profileDescrip = document.querySelector(".profile__description"); //ЗАМЕНА на profileSelectors
 export const profileImage = document.querySelector(".profile__image"); //ЗАМЕНА на profileSelectors
 export const profileSelectors = {
-  nameSelector: '.profile__name',
-  aboutSelector: '.profile__description',
-  avatarSelector: '.profile__image',
-}
+  nameSelector: ".profile__name",
+  aboutSelector: ".profile__description",
+  avatarSelector: ".profile__image",
+};
 //объект настроек
 export const validationConfig = {
   formSelector: ".form",

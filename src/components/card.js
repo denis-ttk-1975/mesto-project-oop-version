@@ -11,10 +11,7 @@ import {
   buttonFormAdd,
 } from "./constants.js";
 import { deleteLikeOnCard, putLikeOnCard, postNewCard } from "./api.js";
-import {
-  // openPopupConfidence,
-  openPopupImage,
-} from "./modal.js";
+import { openPopupConfidence, openPopupImage } from "./modal.js";
 
 //функция создания карточки (возвращает созданную разметку карточки)
 export function cardCreate(card, userId) {

@@ -10,6 +10,8 @@ import {
   popupAdd,
   cardTemplateSelector,
   placeSectionSelector,
+  buttonConfidence,
+  popupConfidence,
 } from "./constants.js";
 
 //утилитарные функции
@@ -47,9 +49,9 @@ export function renderRemoving(isRemoving, button) {
   }
 }
 
-// далее Денис Улесов добавляет функции колл-бэков для передачи в листенеры класса Card в файле index.js
+//!! далее Денис Улесов добавляет функции колл-бэков для передачи в листенеры класса Card в файле index.js
 
-//функция клика на Like
+//!!функция клика на Like
 export function likeHandler() {
   if (
     this._element
@@ -79,24 +81,27 @@ export function likeHandler() {
       .catch((error) => console.log(`Ошибка: ${error}`));
   }
 }
-//функция клика на Trash
+//!!функция клика на Trash
 export function trashHandler() {
-  openPopupConfidenceNew(this._id);
-  // api
-  //   .deleteCard(this._id)
-  //   .then(() => {
-  //     this._element.remove();
-  //     debugger;
-  //   })
-  //   .catch((error) => {
-  //     debugger;
-  //     console.log(`Ошибка при удалении карточки: ${error}`);
-  //   })
-  //   .finally(() => {
-  //     debugger;
-  //   });
+  buttonConfidence.addEventListener("click", (event) => {
+    event.preventDefault();
+    renderRemoving(true, buttonConfidence);
+    api
+      .deleteCard(this._id)
+      .then(() => {
+        this._element.remove();
+        closePopup(popupConfidence);
+      })
+      .catch((error) => {
+        console.log(`Ошибка при удалении карточки: ${error}`);
+      })
+      .finally(() => {
+        renderRemoving(false, buttonConfidence);
+      });
+  });
+  openPopup(popupConfidence);
 }
-//функция клика на самой картинке для открытия попапа самой карточки
+//!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
   imageOpeninPopup.textContent = this._name;
   imageInPopup.alt = this._name;
@@ -104,7 +109,7 @@ export function imageClickHandler() {
   openPopup(imageOpen);
 }
 
-// Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
+//!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
 export function addCardNew(event) {
   event.preventDefault();
   const locationValue = inputElementLocation.value;

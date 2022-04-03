@@ -25,11 +25,7 @@ import {
   imageOpeninPopup,
   imageInPopup,
 } from "./constants.js";
-import {
-  patchProfile,
-  patchAvatar,
-  // deleteCard
-} from "./api.js";
+import { patchProfile, patchAvatar, deleteCard } from "./api.js";
 import { Api } from "./api.js";
 
 const api = new Api();
@@ -88,64 +84,30 @@ export function handleAvatarSubmit(event) {
       renderLoading(false, buttonAvatarPhoto);
     });
 }
-// //функция удаления карточки по конкретному ID
-// export function removeCard() {
-//   const cardId = formConfidence.value;
-//   const card = document.getElementById(`${cardId}`);
-//   renderRemoving(true, buttonConfidence);
-//   deleteCard(cardId)
-//     .then(() => {
-//       card.remove();
-//       closePopup(popupConfidence);
-//     })
-//     .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
-//     .finally(() => {
-//       renderRemoving(false, buttonConfidence);
-//     });
-// }
-// //открыть попап для подтверждения удаления и удалить карту
-// export function openPopupConfidence(cardId) {
-//   formConfidence.value = cardId;
-//   buttonConfidence.addEventListener("click", removeCard);
-//   openPopup(popupConfidence);
-// }
+//функция удаления карточки по конкретному ID
+export function removeCard() {
+  const cardId = formConfidence.value;
+  const card = document.getElementById(`${cardId}`);
+  renderRemoving(true, buttonConfidence);
+  deleteCard(cardId)
+    .then(() => {
+      card.remove();
+      closePopup(popupConfidence);
+    })
+    .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
+    .finally(() => {
+      renderRemoving(false, buttonConfidence);
+    });
+}
+//открыть попап для подтверждения удаления и удалить карту
+export function openPopupConfidence(cardId) {
+  formConfidence.value = cardId;
+  buttonConfidence.addEventListener("click", removeCard);
+  openPopup(popupConfidence);
+}
 export function openPopupImage(event) {
   imageOpeninPopup.textContent = event.target.alt;
   imageInPopup.alt = event.target.alt;
   imageInPopup.src = event.target.src;
   openPopup(imageOpen);
-}
-//!! Денис Улесов переписываю функции для внедрения в колл-бэк удаления карточки
-//открыть попап для подтверждения удаления и удалить карту
-export function openPopupConfidenceNew(cardId) {
-  buttonConfidence.addEventListener("click", function () {
-    console.log(cardId);
-    removeCardNew(cardId);
-  });
-  openPopup(popupConfidence);
-}
-
-//функция удаления карточки по конкретному ID
-export function removeCardNew(cardId) {
-  const cardForDelete = document.getElementById(`${cardId}`);
-  renderRemoving(true, buttonConfidence);
-  console.log("Еще раз - ", cardId);
-  console.log(cardForDelete);
-  console.log(api.deleteCard(cardId));
-  debugger;
-  api
-    .deleteCard(cardId)
-    .then(() => {
-      cardForDelete.remove();
-      debugger;
-      closePopup(popupConfidence);
-    })
-    .catch((error) => {
-      debugger;
-      console.log(`Ошибка при удалении карточки: ${error}`);
-    })
-    .finally(() => {
-      debugger;
-      renderRemoving(false, buttonConfidence);
-    });
 }

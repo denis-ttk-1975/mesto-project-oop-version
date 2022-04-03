@@ -87,16 +87,6 @@ popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);
 });
 
-//активация валидации
-//функция обновления информации о профиле
-// let userId;
-// function updateUserInfo(info) {
-//   userId = info._id;
-//   profileName.textContent = info.name;
-//   profileDescrip.textContent = info.about;
-//   profileImage.src = info.avatar;
-// }
-
 const infoUser = new UserInfo(profileSelectors);
 console.log("infoUser: ", infoUser);
 
@@ -125,10 +115,5 @@ Promise.all(promises)
     );
 
     section.renderAll(userData._id);
-
-    // cards.reverse().forEach((card) => {
-    //   renderCard(card, userData._id, placeSection);
-    //   const cardElement = new Card();
-    // });
   })
   .catch((err) => console.log(`Ошибка загрузки данных: ${err}`));
