@@ -1,11 +1,28 @@
-import { imageInPopup, imageOpeninPopup, imageOpen } from "./constants.js";
-
+import {
+  imageInPopup,
+  imageOpeninPopup,
+  imageOpen,
+  inputElementLocation,
+  inputElementLink,
+  buttonFormAdd,
+  formElementLocation,
+  validationConfig,
+  popupAdd,
+  cardTemplateSelector,
+  placeSectionSelector,
+  buttonConfidence,
+  popupConfidence,
+} from "./constants.js";
+//import { PopupWithForm } from "./PopupWithForm.js";
+import { PopupWithImage } from "./PopupWithImage.js";
 //утилитарные функции
 import { Api } from "./api.js";
-const api = new Api();
-
+import { Section } from "./section.js";
+import { Card } from "./cardClass.js";
 import { openPopupConfidenceNew } from "./modal.js";
 import { handleEscDown } from "./modal.js";
+const api = new Api();
+const PopupImage = new PopupWithImage(".popup_type_image");
 
 export function closePopup(popup) {
   popup.classList.remove("popup_opened");
@@ -43,7 +60,7 @@ export function likeHandler() {
       .classList.contains("card__like_pos_active")
   ) {
     api
-      ._deleteLikeOnCard(this._id)
+      .deleteLikeOnCard(this._id)
       .then((data) => {
         this._element.querySelector(".card__like-counter").textContent =
           data.likes.length;
@@ -54,7 +71,7 @@ export function likeHandler() {
       .catch((error) => console.log(`Ошибка: ${error}`));
   } else {
     api
-      ._putLikeOnCard(this._id)
+      .putLikeOnCard(this._id)
       .then((data) => {
         this._element.querySelector(".card__like-counter").textContent =
           data.likes.length;
@@ -67,12 +84,72 @@ export function likeHandler() {
 }
 //функция клика на Trash
 export function trashHandler() {
-  openPopupConfidenceNew(this._id);
+  buttonConfidence.addEventListener("click", (event) => {
+    event.preventDefault();
+    renderRemoving(true, buttonConfidence);
+    api
+      .deleteCard(this._id)
+      .then(() => {
+        this._element.remove();
+        closePopup(popupConfidence);
+        //PopupForm.close()
+      })
+      .catch((error) => {
+        console.log(`Ошибка при удалении карточки: ${error}`);
+      })
+      .finally(() => {
+        renderRemoving(false, buttonConfidence);
+      });
+  });
+    openPopup(popupConfidence);
+  //PopupForm.open()
 }
 //функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
   imageOpeninPopup.textContent = this._name;
   imageInPopup.alt = this._name;
   imageInPopup.src = this._link;
-  openPopup(imageOpen);
+  // openPopup(imageOpen);
+  PopupImage.open(this._name, this._link)
+}
+
+// Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
+export function addCardNew(event) {
+  event.preventDefault();
+  const locationValue = inputElementLocation.value;
+  const linkValue = inputElementLink.value;
+  renderLoading(true, buttonFormAdd);
+  api
+    .postNewCard(locationValue, linkValue)
+    .then((result) => {
+      const section = new Section(
+        {
+          items: [],
+          renderer: function (element, userId) {
+            const cardElement = new Card(
+              element,
+              userId,
+              cardTemplateSelector,
+              {
+                likeHandler,
+                trashHandler,
+                imageClickHandler,
+              }
+            );
+            return cardElement.generate();
+          },
+        },
+        placeSectionSelector
+      );
+      section.addItem(result, result.owner._id);
+      // renderCard(result, result.owner._id, placeSection);
+      buttonFormAdd.disabled = true;
+      buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
+      formElementLocation.reset(); //очистить форму
+      closePopup(popupAdd);
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      renderLoading(false, buttonFormAdd);
+    });
 }

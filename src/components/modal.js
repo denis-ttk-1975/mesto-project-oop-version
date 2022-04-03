@@ -25,7 +25,7 @@ import {
   imageOpeninPopup,
   imageInPopup,
 } from "./constants.js";
-import { patchProfile, patchAvatar, deleteCard } from "./api.js";
+import {patchProfile, patchAvatar, deleteCard } from "./api.js";
 import { Api } from "./api.js";
 
 const api = new Api();
@@ -110,27 +110,4 @@ export function openPopupImage(event) {
   imageInPopup.alt = event.target.alt;
   imageInPopup.src = event.target.src;
   openPopup(imageOpen);
-}
-//!! Денис Улесов переписываю функции для внедрения в колл-бэк удаления карточки
-//функция удаления карточки по конкретному ID
-export function removeCardNew(cardId) {
-  // const card = document.getElementById(`${cardId}`);
-  renderRemoving(true, buttonConfidence);
-  api
-    ._deleteCard(cardId)
-    .then(() => {
-      this._element.remove();
-      closePopup(popupConfidence);
-    })
-    .catch((error) => console.log(`Ошибка при удалении карточки: ${error}`))
-    .finally(() => {
-      renderRemoving(false, buttonConfidence);
-    });
-}
-//открыть попап для подтверждения удаления и удалить карту
-export function openPopupConfidenceNew(cardId) {
-  buttonConfidence.addEventListener("click", function () {
-    removeCardNew(cardId);
-  });
-  openPopup(popupConfidence);
 }

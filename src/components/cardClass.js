@@ -1,7 +1,3 @@
-// import {popupAdd,
-//   inputElementLocation, inputElementLink, formElementLocation,
-//   validationConfig, placeSection, cardTemplate, buttonFormAdd} from './constants.js';
-
 //! функция проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
 //! кладу в глобальную область видимости чтоб было видно в классе Card
 //! ? возможно надо перенести все функции в utils ?
@@ -45,11 +41,15 @@ export class Card {
     this._element.querySelector(".card__like").addEventListener("click", () => {
       this._likeHandler();
     });
-    this._element
-      .querySelector(".card__trash")
-      .addEventListener("click", () => {
-        this._trashHandler();
-      });
+
+    if (this._element.querySelector(".card__trash")) {
+      this._element
+        .querySelector(".card__trash")
+        .addEventListener("click", () => {
+          this._trashHandler();
+        });
+    }
+
     this._element
       .querySelector(".card__image")
       .addEventListener("click", () => {

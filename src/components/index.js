@@ -1,26 +1,66 @@
-import '../pages/index.css';
-import {openPopup} from './utils.js';
-import {handleClick, handleProfileFormSubmit, handleAvatarSubmit, openProfilePopup} from './modal.js';
-import {addCard, renderCard} from './card.js';
-import {buttonEdit, buttonAdd, buttonAvatar, popupAvatar, popups, popupAdd, formElementProfile, formElementLocation,
-  formElementAvatar, addCardFormFieldSet, avatarFormFieldSet,
-  validationConfig, placeSection,  profileSelectors, editProfileFormFieldSet} from './constants.js';
-import { getInitialCards, getUserInfo } from './api.js'
-import { FormValidator } from './formValidator.js';
-import { UserInfo } from './UserInfo.js';
+import "../pages/index.css";
+import { openPopup } from "./utils.js";
+import {
+  handleClick,
+  handleProfileFormSubmit,
+  handleAvatarSubmit,
+  openProfilePopup,
+} from "./modal.js";
+import { addCard, renderCard } from "./card.js";
+import {
+  buttonEdit,
+  buttonAdd,
+  buttonAvatar,
+  popupAvatar,
+  popups,
+  popupAdd,
+  formElementProfile,
+  formElementLocation,
+  formElementAvatar,
+  addCardFormFieldSet,
+  avatarFormFieldSet,
+  validationConfig,
+  placeSectionSelector,
+  profileSelectors,
+  editProfileFormFieldSet,
+  cardTemplate,
+  cardTemplateSelector,
+  placeSection,
+} from "./constants.js";
+import { getInitialCards, getUserInfo } from "./api.js";
+import { FormValidator } from "./formValidator.js";
+import { Api } from "./api.js";
+import { Card } from "./cardClass.js";
+import {
+  likeHandler,
+  trashHandler,
+  imageClickHandler,
+  addCardNew,
+} from "./utils.js";
+import { Section } from "./section.js";
+import { UserInfo } from "./UserInfo.js";
+import { PopupWithForm } from "./PopupWithForm.js";
+// import { PopupWithImage } from "./PopupWithImage.js";
+// const PopupFormProfile = new PopupWithForm(".popup_type_edit", handleProfileFormSubmit);
 
-const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet)
-editProfileForm.enableValidation()
+const api = new Api();
 
-const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet)
-addCardForm.enableValidation()
+const editProfileForm = new FormValidator(
+  validationConfig,
+  editProfileFormFieldSet
+);
+editProfileForm.enableValidation();
 
-const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet)
-avatarForm.enableValidation()
+const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet);
+addCardForm.enableValidation();
+
+const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
+avatarForm.enableValidation();
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
-  openProfilePopup()
+  //openProfilePopup();
+  PopupWithForm.open()
   editProfileForm.validate();
 });
 //открыть попап для добавления карточки
@@ -40,22 +80,41 @@ formElementProfile.addEventListener("submit", (event) => {
   handleProfileFormSubmit(event);
 });
 //обработчик функции добавления карточки
-formElementLocation.addEventListener("submit", addCard);
+// formElementLocation.addEventListener("submit", addCard);
+formElementLocation.addEventListener("submit", addCardNew);
+
 //обработчик закрытия попапа при клике на оверлей или крестик
 popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);
 });
 
-const infoUser = new UserInfo(profileSelectors)
-//загрузка данных
-const promises = [getInitialCards(), getUserInfo()]
-  Promise.all(promises)
-  .then(([cards, userData]) => {
-    infoUser.setUserInfo(userData) //метод экземпляра класса UserInfo для обновления информации о профиле
-    cards.reverse().forEach(card => {
-      renderCard(card, userData._id, placeSection);
-    });
-  })
-  .catch(err => console.log(`Ошибка загрузки данных: ${err}`))
+const infoUser = new UserInfo(profileSelectors);
+console.log("infoUser: ", infoUser);
 
-  
+//загрузка данных
+
+const promises = [api.getInitialCards(), api.getUserInfo()];
+Promise.all(promises)
+  .then(([cards, userData]) => {
+    infoUser.setUserInfo(userData); //метод экземпляра класса UserInfo для обновления информации о профиле
+    console.log("infoUser: ", infoUser);
+
+    const section = new Section(
+      {
+        items: cards,
+        renderer: function (element, userId) {
+          const cardElement = new Card(element, userId, cardTemplateSelector, {
+            likeHandler,
+            trashHandler,
+            imageClickHandler,
+          });
+
+          return cardElement.generate();
+        },
+      },
+      placeSectionSelector
+    );
+
+    section.renderAll(userData._id);
+  })
+  .catch((err) => console.log(`Ошибка загрузки данных: ${err}`));
