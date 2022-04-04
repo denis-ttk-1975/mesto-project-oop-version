@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import { openPopup } from "./utils.js";
+import { openPopup, renderLoading } from "./utils.js";
 import {
   handleClick,
   handleProfileFormSubmit,
@@ -26,6 +26,7 @@ import {
   cardTemplate,
   cardTemplateSelector,
   placeSection,
+  buttonProfile,
 } from "./constants.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
@@ -39,10 +40,10 @@ import {
 import { Section } from "./section.js";
 import { UserInfo } from "./UserInfo.js";
 import { PopupWithForm } from "./PopupWithForm.js";
-// import { PopupWithImage } from "./PopupWithImage.js";
-// const PopupFormProfile = new PopupWithForm(".popup_type_edit", handleProfileFormSubmit);
+import { PopupWithImage } from "./PopupWithImage.js";
 
 const api = new Api();
+const infoUser = new UserInfo(profileSelectors);
 
 const editProfileForm = new FormValidator(
   validationConfig,
@@ -56,10 +57,24 @@ addCardForm.enableValidation();
 const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
 avatarForm.enableValidation();
 
+const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
+  renderLoading(true, buttonProfile);
+  api.patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
+    .then((objInputs) => {
+      infoUser.setUserInfo({...infoUser.getUserInfo(), name: objInputs.name, about: objInputs.about});
+      PopupFormProfile.close();
+    })
+    .catch((err) => console.log(`Ошибка: ${err}`))
+    .finally(() => {
+      renderLoading(false, buttonProfile);
+    });
+});
+PopupFormProfile.setEventListeners()
+
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
- // PopupWithForm.open();
+  PopupFormProfile.open();
   editProfileForm.validate();
 });
 //открыть попап для добавления карточки
@@ -74,10 +89,7 @@ buttonAvatar.addEventListener("click", function () {
 formElementAvatar.addEventListener("submit", function (event) {
   handleAvatarSubmit(event);
 });
-//обработчик функции редактирования профиля
-formElementProfile.addEventListener("submit", (event) => {
-  handleProfileFormSubmit(event);
-});
+
 //обработчик функции добавления карточки
 // formElementLocation.addEventListener("submit", addCard);
 formElementLocation.addEventListener("submit", addCardNew);
@@ -87,11 +99,7 @@ popups.forEach(function (popup) {
   popup.addEventListener("mousedown", handleClick);
 });
 
-const infoUser = new UserInfo(profileSelectors);
-console.log("infoUser: ", infoUser);
-
 //загрузка данных
-
 const promises = [api.getInitialCards(), api.getUserInfo()];
 Promise.all(promises)
   .then(([cards, userData]) => {

@@ -24,12 +24,12 @@ import {
   imageOpen,
   imageOpeninPopup,
   imageInPopup,
+  profileSelectors
 } from "./constants.js";
-import { patchProfile, patchAvatar, deleteCard } from "./api.js";
 import { Api } from "./api.js";
-
+import { UserInfo } from "./UserInfo.js";
 const api = new Api();
-
+const infoUser = new UserInfo(profileSelectors);
 //функция закрытия попапа при нажатии ESC
 export const handleEscDown = (event) => {
   if (event.key === "Escape") {
@@ -48,30 +48,30 @@ export const handleClick = (event) => {
 };
 // функция открытия попапа редактирования профиля с начальными данными
 export function openProfilePopup() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileDescrip.textContent;
-  openPopup(popupEdit);
+  const infoProfile = infoUser.getUserInfo();
+  nameInput.value = infoProfile.name;
+  jobInput.value = infoProfile.about;
 }
-// функция редактирования профиля
-export function handleProfileFormSubmit(event) {
-  event.preventDefault();
-  renderLoading(true, buttonProfile);
-  patchProfile(nameInput.value, jobInput.value)
-    .then((result) => {
-      profileName.textContent = result.name;
-      profileDescrip.textContent = result.about;
-      closePopup(popupEdit);
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() => {
-      renderLoading(false, buttonProfile);
-    });
-}
+// функция редактирования профиля. Внедрена в index.js в экземпляр класса 
+// export function handleProfileFormSubmit(event) {
+//   event.preventDefault();
+//   renderLoading(true, buttonProfile);
+//   patchProfile(nameInput.value, jobInput.value)
+//     .then((result) => {
+//       profileName.textContent = result.name;
+//       profileDescrip.textContent = result.about;
+//       closePopup(popupEdit);
+//     })
+//     .catch((error) => console.log(`Ошибка: ${error}`))
+//     .finally(() => {
+//       renderLoading(false, buttonProfile);
+//     });
+// }
 // функция редактирования аватара
 export function handleAvatarSubmit(event) {
   event.preventDefault();
   renderLoading(true, buttonAvatarPhoto);
-  patchAvatar(avatarInput.value)
+  api.patchAvatar(avatarInput.value)
     .then((result) => {
       profileImage.src = result.avatar;
       closePopup(popupAvatar);
@@ -89,7 +89,7 @@ export function removeCard() {
   const cardId = formConfidence.value;
   const card = document.getElementById(`${cardId}`);
   renderRemoving(true, buttonConfidence);
-  deleteCard(cardId)
+  api.deleteCard(cardId)
     .then(() => {
       card.remove();
       closePopup(popupConfidence);
