@@ -13,7 +13,7 @@ import {
   buttonConfidence,
   popupConfidence,
 } from "./constants.js";
-//import { PopupWithForm } from "./PopupWithForm.js";
+import { PopupWithForm } from "./PopupWithForm.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 //утилитарные функции
 import { Api } from "./api.js";
@@ -23,6 +23,22 @@ import { openPopupConfidenceNew } from "./modal.js";
 import { handleEscDown } from "./modal.js";
 const api = new Api();
 const PopupImage = new PopupWithImage(".popup_type_image");
+PopupImage.setEventListeners();
+
+// const PopupConfide = new PopupWithForm(".popup__remove-card", ({}) => {
+//   renderRemoving(true, buttonConfidence);
+//   api
+//     .deleteCard(как передать сюда id карты ????)
+//     .then(() => {
+//       this._element.remove();
+//       PopupConfide.close();
+//     })
+//     .catch((err) => console.log(`Ошибка: ${err}`))
+//     .finally(() => {
+//       renderRemoving(false, buttonConfidence);
+//     });
+// });
+// PopupConfide.setEventListeners();
 
 export function closePopup(popup) {
   popup.classList.remove("popup_opened");
@@ -83,7 +99,9 @@ export function likeHandler() {
   }
 }
 //!!функция клика на Trash
-export function trashHandler() {
+export function trashHandler(id) {
+  // const idCardForDelete = id;
+  // PopupConfide.open();
   buttonConfidence.addEventListener("click", (event) => {
     event.preventDefault();
     renderRemoving(true, buttonConfidence);
@@ -106,50 +124,50 @@ export function trashHandler() {
 }
 //!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
-  imageOpeninPopup.textContent = this._name;
-  imageInPopup.alt = this._name;
-  imageInPopup.src = this._link;
+  // imageOpeninPopup.textContent = this._name;
+  // imageInPopup.alt = this._name;
+  // imageInPopup.src = this._link;
   // openPopup(imageOpen);
   PopupImage.open(this._name, this._link);
 }
 
 //!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
-export function addCardNew(event) {
-  event.preventDefault();
-  const locationValue = inputElementLocation.value;
-  const linkValue = inputElementLink.value;
-  renderLoading(true, buttonFormAdd);
-  api
-    .postNewCard(locationValue, linkValue)
-    .then((result) => {
-      const section = new Section(
-        {
-          items: [],
-          renderer: function (element, userId) {
-            const cardElement = new Card(
-              element,
-              userId,
-              cardTemplateSelector,
-              {
-                likeHandler,
-                trashHandler,
-                imageClickHandler,
-              }
-            );
-            return cardElement.generate();
-          },
-        },
-        placeSectionSelector
-      );
-      section.addItem(result, result.owner._id);
-      // renderCard(result, result.owner._id, placeSection);
-      buttonFormAdd.disabled = true;
-      buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
-      formElementLocation.reset(); //очистить форму
-      closePopup(popupAdd);
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() => {
-      renderLoading(false, buttonFormAdd);
-    });
-}
+// export function addCardNew(objInputs) {
+//   // event.preventDefault();
+//   // const locationValue = inputElementLocation.value;
+//   // const linkValue = inputElementLink.value;
+//   renderLoading(true, buttonFormAdd);
+//   api
+//     .postNewCard(objInputs.location, objInputs.link)
+//     .then((result) => {
+//       const section = new Section(
+//         {
+//           items: [],
+//           renderer: function (element, userId) {
+//             const cardElement = new Card(
+//               element,
+//               userId,
+//               cardTemplateSelector,
+//               {
+//                 likeHandler,
+//                 trashHandler,
+//                 imageClickHandler,
+//               }
+//             );
+//             return cardElement.generate();
+//           },
+//         },
+//         placeSectionSelector
+//       );
+//       section.addItem(result, result.owner._id);
+//       // renderCard(result, result.owner._id, placeSection);
+//       // buttonFormAdd.disabled = true;
+//       // buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
+//       formElementLocation.reset(); //очистить форму
+//       PopupFormAddCard.close();
+//     })
+//     .catch((error) => console.log(`Ошибка: ${error}`))
+//     .finally(() => {
+//       renderLoading(false, buttonFormAdd);
+//     });
+// }

@@ -27,6 +27,7 @@ import {
   cardTemplateSelector,
   placeSection,
   buttonProfile,
+  buttonFormAdd,
 } from "./constants.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
@@ -35,7 +36,7 @@ import {
   likeHandler,
   trashHandler,
   imageClickHandler,
-  addCardNew,
+  // addCardNew,
 } from "./utils.js";
 import { Section } from "./section.js";
 import { UserInfo } from "./UserInfo.js";
@@ -56,12 +57,17 @@ addCardForm.enableValidation();
 
 const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
 avatarForm.enableValidation();
-
+// активировать попап для редактирования профиля
 const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
   renderLoading(true, buttonProfile);
-  api.patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
+  api
+    .patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
     .then((objInputs) => {
-      infoUser.setUserInfo({...infoUser.getUserInfo(), name: objInputs.name, about: objInputs.about});
+      infoUser.setUserInfo({
+        ...infoUser.getUserInfo(),
+        name: objInputs.name,
+        about: objInputs.about,
+      });
       PopupFormProfile.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
@@ -69,7 +75,7 @@ const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
       renderLoading(false, buttonProfile);
     });
 });
-PopupFormProfile.setEventListeners()
+PopupFormProfile.setEventListeners();
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
@@ -77,10 +83,50 @@ buttonEdit.addEventListener("click", function () {
   PopupFormProfile.open();
   editProfileForm.validate();
 });
+
+// активировать попап для добавления карточки
+const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
+  renderLoading(true, buttonFormAdd);
+  api
+    .postNewCard(objInputs.location, objInputs.link)
+    .then((result) => {
+      const section = new Section(
+        {
+          items: [],
+          renderer: function (element, userId) {
+            const cardElement = new Card(
+              element,
+              userId,
+              cardTemplateSelector,
+              {
+                likeHandler,
+                trashHandler,
+                imageClickHandler,
+              }
+            );
+            return cardElement.generate();
+          },
+        },
+        placeSectionSelector
+      );
+      section.addItem(result, result.owner._id);
+
+      formElementLocation.reset(); //очистить форму
+      PopupFormAddCard.close();
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      renderLoading(false, buttonFormAdd);
+    });
+});
+PopupFormAddCard.setEventListeners();
 //открыть попап для добавления карточки
 buttonAdd.addEventListener("click", function () {
-  openPopup(popupAdd);
+  PopupFormAddCard.open();
+  addCardForm.validate();
+  // openPopup(popupAdd);
 });
+
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
   openPopup(popupAvatar);
@@ -92,7 +138,7 @@ formElementAvatar.addEventListener("submit", function (event) {
 
 //обработчик функции добавления карточки
 // formElementLocation.addEventListener("submit", addCard);
-formElementLocation.addEventListener("submit", addCardNew);
+// formElementLocation.addEventListener("submit", addCardNew);
 
 //обработчик закрытия попапа при клике на оверлей или крестик
 popups.forEach(function (popup) {

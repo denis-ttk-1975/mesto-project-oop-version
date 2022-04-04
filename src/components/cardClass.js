@@ -46,7 +46,7 @@ export class Card {
       this._element
         .querySelector(".card__trash")
         .addEventListener("click", () => {
-          this._trashHandler();
+          this._trashHandler(this._id);
         });
     }
 

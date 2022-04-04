@@ -15,6 +15,7 @@ export class Popup {
   }
   //метод для закрытия попапа при нажатии ESC
   _handleEscClose(event) {
+    console.log(event.key);
     if (event.key === "Escape") {
       this.close();
     }
