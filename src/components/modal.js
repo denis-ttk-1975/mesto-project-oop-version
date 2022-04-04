@@ -68,22 +68,22 @@ export function openProfilePopup() {
 //     });
 // }
 // функция редактирования аватара
-export function handleAvatarSubmit(event) {
-  event.preventDefault();
-  renderLoading(true, buttonAvatarPhoto);
-  api.patchAvatar(avatarInput.value)
-    .then((result) => {
-      profileImage.src = result.avatar;
-      closePopup(popupAvatar);
-      formElementAvatar.reset();
-      buttonAvatarPhoto.disabled = true;
-      buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass);
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() => {
-      renderLoading(false, buttonAvatarPhoto);
-    });
-}
+// export function handleAvatarSubmit(event) {
+//   event.preventDefault();
+//   renderLoading(true, buttonAvatarPhoto);
+//   api.patchAvatar(avatarInput.value)
+//     .then((result) => {
+//       profileImage.src = result.avatar;
+//       closePopup(popupAvatar);
+//       formElementAvatar.reset();
+//       buttonAvatarPhoto.disabled = true;
+//       buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass);
+//     })
+//     .catch((error) => console.log(`Ошибка: ${error}`))
+//     .finally(() => {
+//       renderLoading(false, buttonAvatarPhoto);
+//     });
+// }
 //функция удаления карточки по конкретному ID
 export function removeCard() {
   const cardId = formConfidence.value;

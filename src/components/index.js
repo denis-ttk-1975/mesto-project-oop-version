@@ -27,6 +27,7 @@ import {
   cardTemplateSelector,
   placeSection,
   buttonProfile,
+  buttonAvatarPhoto
 } from "./constants.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
@@ -45,10 +46,7 @@ import { PopupWithImage } from "./PopupWithImage.js";
 const api = new Api();
 const infoUser = new UserInfo(profileSelectors);
 
-const editProfileForm = new FormValidator(
-  validationConfig,
-  editProfileFormFieldSet
-);
+const editProfileForm = new FormValidator(validationConfig,editProfileFormFieldSet);
 editProfileForm.enableValidation();
 
 const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet);
@@ -56,7 +54,7 @@ addCardForm.enableValidation();
 
 const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
 avatarForm.enableValidation();
-
+//экземпляр класса для открытия попапа профиля
 const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
   renderLoading(true, buttonProfile);
   api.patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
@@ -69,9 +67,23 @@ const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
       renderLoading(false, buttonProfile);
     });
 });
+//экземпляр класса для открытия попапа аватара
+const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
+  renderLoading(true, buttonAvatarPhoto);
+  api.patchAvatar(objInputs.avatarProfile)
+    .then((objInputs) => {
+      infoUser.setUserInfo({...infoUser.getUserInfo(), avatar: objInputs.avatar});
+      PopupFormAvatar.close();
+    })
+    .catch((err) => console.log(`Ошибка: ${err}`))
+    .finally(() => {
+      renderLoading(false, buttonAvatarPhoto);
+    });
+});
+//вызов методов экземпляров классов, навешивающих слушатель на "сохранить" в попах 
 PopupFormProfile.setEventListeners()
-
-// открыть попап редактирования профиля
+PopupFormAvatar.setEventListeners()
+// обработчик попапа редактирования профиля
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
   PopupFormProfile.open();
@@ -83,15 +95,10 @@ buttonAdd.addEventListener("click", function () {
 });
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
-  openPopup(popupAvatar);
+  PopupFormAvatar.open()
+  avatarForm.validate();
 });
-//обработчик функции редактирования аватара
-formElementAvatar.addEventListener("submit", function (event) {
-  handleAvatarSubmit(event);
-});
-
 //обработчик функции добавления карточки
-// formElementLocation.addEventListener("submit", addCard);
 formElementLocation.addEventListener("submit", addCardNew);
 
 //обработчик закрытия попапа при клике на оверлей или крестик
