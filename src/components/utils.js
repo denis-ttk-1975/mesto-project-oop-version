@@ -124,50 +124,5 @@ export function trashHandler(id) {
 }
 //!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
-  // imageOpeninPopup.textContent = this._name;
-  // imageInPopup.alt = this._name;
-  // imageInPopup.src = this._link;
-  // openPopup(imageOpen);
   PopupImage.open(this._name, this._link);
 }
-
-//!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
-// export function addCardNew(objInputs) {
-//   // event.preventDefault();
-//   // const locationValue = inputElementLocation.value;
-//   // const linkValue = inputElementLink.value;
-//   renderLoading(true, buttonFormAdd);
-//   api
-//     .postNewCard(objInputs.location, objInputs.link)
-//     .then((result) => {
-//       const section = new Section(
-//         {
-//           items: [],
-//           renderer: function (element, userId) {
-//             const cardElement = new Card(
-//               element,
-//               userId,
-//               cardTemplateSelector,
-//               {
-//                 likeHandler,
-//                 trashHandler,
-//                 imageClickHandler,
-//               }
-//             );
-//             return cardElement.generate();
-//           },
-//         },
-//         placeSectionSelector
-//       );
-//       section.addItem(result, result.owner._id);
-//       // renderCard(result, result.owner._id, placeSection);
-//       // buttonFormAdd.disabled = true;
-//       // buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
-//       formElementLocation.reset(); //очистить форму
-//       PopupFormAddCard.close();
-//     })
-//     .catch((error) => console.log(`Ошибка: ${error}`))
-//     .finally(() => {
-//       renderLoading(false, buttonFormAdd);
-//     });
-// }
