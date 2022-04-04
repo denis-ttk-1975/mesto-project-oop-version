@@ -21,16 +21,12 @@ import {
   avatarFormFieldSet,
   validationConfig,
   placeSectionSelector,
-  profileName,
-  profileDescrip,
-  profileImage,
   profileSelectors,
   editProfileFormFieldSet,
   cardTemplate,
   cardTemplateSelector,
   placeSection,
 } from "./constants.js";
-import { getInitialCards, getUserInfo } from "./api.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
 import { Card } from "./cardClass.js";
@@ -62,8 +58,8 @@ avatarForm.enableValidation();
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
-  //openProfilePopup();
-  PopupWithForm.open();
+  openProfilePopup();
+ // PopupWithForm.open();
   editProfileForm.validate();
 });
 //открыть попап для добавления карточки

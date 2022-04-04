@@ -3,12 +3,12 @@ export class PopupWithForm extends Popup {
   constructor(popupSelector, handleFormSubmit) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
-    this._form = this.popup.querySelector(".form");
+    this._form = this.popup.querySelector(".form__edit");
     this._formButton = this._form.querySelector(".form__button");
   }
   //собирает данные импутов формы
   _getInputValues() {
-    this._inputElements = this._form.querySelectorAll(".form__edit");
+    this._inputElements = this._form.querySelectorAll(".form__item");
     this._objInputs = {};
     this._inputElements.forEach((inputElement) => {
       console.log(inputElement);
