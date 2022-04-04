@@ -1,4 +1,4 @@
-export default class Popup {
+export class Popup {
   constructor(popupSelector) {
     this.popupSelector = popupSelector;
     this.popup = document.querySelector(this.popupSelector);
@@ -6,12 +6,12 @@ export default class Popup {
   //метод для открытия попапа
   open() {
     this.popup.classList.add("popup_opened");
-    window.removeEventListener("keydown", this._handleEscClose());
+    window.addEventListener("keydown", this._handleEscClose);
   }
   //метод для закрытия попапа
   close() {
     this.popup.classList.remove("popup_opened");
-    window.addEventListener("keydown", this._handleEscClose());
+    window.removeEventListener("keydown", this._handleEscClose);
   }
   //метод для закрытия попапа при нажатии ESC
   _handleEscClose(event) {

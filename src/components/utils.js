@@ -13,15 +13,16 @@ import {
   buttonConfidence,
   popupConfidence,
 } from "./constants.js";
-
+//import { PopupWithForm } from "./PopupWithForm.js";
+import { PopupWithImage } from "./PopupWithImage.js";
 //утилитарные функции
 import { Api } from "./api.js";
 import { Section } from "./section.js";
 import { Card } from "./cardClass.js";
-const api = new Api();
-
 import { openPopupConfidenceNew } from "./modal.js";
 import { handleEscDown } from "./modal.js";
+const api = new Api();
+const PopupImage = new PopupWithImage(".popup_type_image");
 
 export function closePopup(popup) {
   popup.classList.remove("popup_opened");
@@ -91,6 +92,7 @@ export function trashHandler() {
       .then(() => {
         this._element.remove();
         closePopup(popupConfidence);
+        //PopupForm.close()
       })
       .catch((error) => {
         console.log(`Ошибка при удалении карточки: ${error}`);
@@ -100,13 +102,15 @@ export function trashHandler() {
       });
   });
   openPopup(popupConfidence);
+  //PopupForm.open()
 }
 //!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
   imageOpeninPopup.textContent = this._name;
   imageInPopup.alt = this._name;
   imageInPopup.src = this._link;
-  openPopup(imageOpen);
+  // openPopup(imageOpen);
+  PopupImage.open(this._name, this._link);
 }
 
 //!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки

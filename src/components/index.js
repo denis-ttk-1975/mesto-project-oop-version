@@ -24,11 +24,11 @@ import {
   profileName,
   profileDescrip,
   profileImage,
+  profileSelectors,
   editProfileFormFieldSet,
   cardTemplate,
   cardTemplateSelector,
   placeSection,
-  profileSelectors,
 } from "./constants.js";
 import { getInitialCards, getUserInfo } from "./api.js";
 import { FormValidator } from "./formValidator.js";
@@ -42,6 +42,9 @@ import {
 } from "./utils.js";
 import { Section } from "./section.js";
 import { UserInfo } from "./UserInfo.js";
+import { PopupWithForm } from "./PopupWithForm.js";
+// import { PopupWithImage } from "./PopupWithImage.js";
+// const PopupFormProfile = new PopupWithForm(".popup_type_edit", handleProfileFormSubmit);
 
 const api = new Api();
 
@@ -59,7 +62,8 @@ avatarForm.enableValidation();
 
 // открыть попап редактирования профиля
 buttonEdit.addEventListener("click", function () {
-  openProfilePopup();
+  //openProfilePopup();
+  PopupWithForm.open();
   editProfileForm.validate();
 });
 //открыть попап для добавления карточки
