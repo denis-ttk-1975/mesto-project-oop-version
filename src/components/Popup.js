@@ -14,12 +14,11 @@ export class Popup {
     window.removeEventListener("keydown", this._handleEscClose);
   }
   //метод для закрытия попапа при нажатии ESC
-  _handleEscClose(event) {
-    console.log(event.key);
+  _handleEscClose = (event) => {
     if (event.key === "Escape") {
       this.close();
     }
-  }
+  };
   //метод для навешивания слушателей
   setEventListeners() {
     this.popup.addEventListener("mousedown", (event) => {

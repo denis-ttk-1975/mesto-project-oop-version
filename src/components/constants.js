@@ -1,5 +1,5 @@
 //constants
-export const popups = document.querySelectorAll(".popup");
+
 //попап редактирования профиля и его элементы
 export const popupEdit = document.querySelector(".popup_type_edit");
 export const buttonProfile = popupEdit.querySelector(".form__button");

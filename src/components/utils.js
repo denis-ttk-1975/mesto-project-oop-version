@@ -126,3 +126,44 @@ export function trashHandler(id) {
 export function imageClickHandler() {
   PopupImage.open(this._name, this._link);
 }
+
+// //!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
+// export function addCardNew(event) {
+//   event.preventDefault();
+//   const locationValue = inputElementLocation.value;
+//   const linkValue = inputElementLink.value;
+//   renderLoading(true, buttonFormAdd);
+//   api
+//     .postNewCard(locationValue, linkValue)
+//     .then((result) => {
+//       const section = new Section(
+//         {
+//           items: [],
+//           renderer: function (element, userId) {
+//             const cardElement = new Card(
+//               element,
+//               userId,
+//               cardTemplateSelector,
+//               {
+//                 likeHandler,
+//                 trashHandler,
+//                 imageClickHandler,
+//               }
+//             );
+//             return cardElement.generate();
+//           },
+//         },
+//         placeSectionSelector
+//       );
+//       section.addItem(result, result.owner._id);
+//       // renderCard(result, result.owner._id, placeSection);
+//       buttonFormAdd.disabled = true;
+//       buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
+//       formElementLocation.reset(); //очистить форму
+//       closePopup(popupAdd);
+//     })
+//     .catch((error) => console.log(`Ошибка: ${error}`))
+//     .finally(() => {
+//       renderLoading(false, buttonFormAdd);
+//     });
+// }

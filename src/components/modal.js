@@ -28,6 +28,7 @@ import {
 } from "./constants.js";
 import { Api } from "./api.js";
 import { UserInfo } from "./UserInfo.js";
+
 const api = new Api();
 const infoUser = new UserInfo(profileSelectors);
 //функция закрытия попапа при нажатии ESC
@@ -38,14 +39,14 @@ export const handleEscDown = (event) => {
   }
 };
 //функция закрытия попапа при клике на оверлей или крестик
-export const handleClick = (event) => {
-  if (event.target.classList.contains("popup_opened")) {
-    closePopup(event.currentTarget);
-  }
-  if (event.target.classList.contains("popup__close")) {
-    closePopup(event.currentTarget);
-  }
-};
+// export const handleClick = (event) => {
+//   if (event.target.classList.contains("popup_opened")) {
+//     closePopup(event.currentTarget);
+//   }
+//   if (event.target.classList.contains("popup__close")) {
+//     closePopup(event.currentTarget);
+//   }
+// };
 // функция открытия попапа редактирования профиля с начальными данными
 export function openProfilePopup() {
   const infoProfile = infoUser.getUserInfo();
@@ -67,23 +68,23 @@ export function openProfilePopup() {
 //       renderLoading(false, buttonProfile);
 //     });
 // }
-// функция редактирования аватара
-export function handleAvatarSubmit(event) {
-  event.preventDefault();
-  renderLoading(true, buttonAvatarPhoto);
-  api.patchAvatar(avatarInput.value)
-    .then((result) => {
-      profileImage.src = result.avatar;
-      closePopup(popupAvatar);
-      formElementAvatar.reset();
-      buttonAvatarPhoto.disabled = true;
-      buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass);
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`))
-    .finally(() => {
-      renderLoading(false, buttonAvatarPhoto);
-    });
-}
+// функция редактирования аватара. Внедрена в index.js в экземпляр класса 
+// export function handleAvatarSubmit(event) {
+//   event.preventDefault();
+//   renderLoading(true, buttonAvatarPhoto);
+//   api.patchAvatar(avatarInput.value)
+//     .then((result) => {
+//       profileImage.src = result.avatar;
+//       closePopup(popupAvatar);
+//       formElementAvatar.reset();
+//       buttonAvatarPhoto.disabled = true;
+//       buttonAvatarPhoto.classList.add(validationConfig.inactiveButtonClass);
+//     })
+//     .catch((error) => console.log(`Ошибка: ${error}`))
+//     .finally(() => {
+//       renderLoading(false, buttonAvatarPhoto);
+//     });
+// }
 //функция удаления карточки по конкретному ID
 export function removeCard() {
   const cardId = formConfidence.value;
@@ -99,7 +100,7 @@ export function removeCard() {
       renderRemoving(false, buttonConfidence);
     });
 }
-//открыть попап для подтверждения удаления и удалить карту
+//открыть попап для подтверждения удаления и удалить карту МОЖНО УДАЛИТЬ ФУНКЦИИ
 export function openPopupConfidence(cardId) {
   formConfidence.value = cardId;
   buttonConfidence.addEventListener("click", removeCard);
