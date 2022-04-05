@@ -12,6 +12,6 @@
 * [Ссылка на GitHub Page](https://avaveryu.github.io/mesto-project)
 
 **Над проектом работали**
-*[Денис Улесов](https://github.com/denis-ttk-1975)
-*[Олег Попов](https://github.com/dePanique)
-*[Аверьянова Юлия](https://github.com/AvaveryU)
+* [Денис Улесов](https://github.com/denis-ttk-1975)
+* [Олег Попов](https://github.com/dePanique)
+* [Аверьянова Юлия](https://github.com/AvaveryU)
