@@ -63,6 +63,7 @@ const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
         ...infoUser.getUserInfo(),
         avatar: result.avatar,
       });
+      avatarForm.validate();
       PopupFormAvatar.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
@@ -96,7 +97,7 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
         placeSectionSelector
       );
       section.addItem(result, result.owner._id);
-
+      addCardForm.validate();
       formElementLocation.reset(); //очистить форму
       PopupFormAddCard.close();
     })
@@ -117,12 +118,10 @@ buttonEdit.addEventListener("click", function () {
 //открыть попап для добавления карточки
 buttonAdd.addEventListener("click", function () {
   PopupFormAddCard.open();
-  addCardForm.validate();
 });
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
   PopupFormAvatar.open();
-  avatarForm.validate();
 });
 //загрузка данных
 const promises = [api.getInitialCards(), api.getUserInfo()];
