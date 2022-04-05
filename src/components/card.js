@@ -1,7 +1,4 @@
 //! функция проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
-//! кладу в глобальную область видимости чтоб было видно в классе Card
-//! ? возможно надо перенести все функции в utils ?
-
 function findUserLike(likeData, myUserId) {
   return likeData.some(function (likerData) {
     return myUserId === likerData._id;

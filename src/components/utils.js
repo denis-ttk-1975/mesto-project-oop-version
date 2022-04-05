@@ -1,30 +1,17 @@
 import {
-  imageInPopup,
-  imageOpeninPopup,
-  imageOpen,
-  inputElementLocation,
-  inputElementLink,
-  buttonFormAdd,
-  formElementLocation,
-  validationConfig,
-  popupAdd,
-  cardTemplateSelector,
-  placeSectionSelector,
   buttonConfidence,
-  popupConfidence,
+  jobInput,
+  nameInput,
+  profileSelectors,
 } from "./constants.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 import { PopupWithImage } from "./PopupWithImage.js";
-//утилитарные функции
 import { Api } from "./api.js";
-import { Section } from "./section.js";
-import { Card } from "./card.js";
-import { openPopupConfidenceNew } from "./modal.js";
-import { handleEscDown } from "./modal.js";
+import { UserInfo } from "./UserInfo.js";
+
+const infoUser = new UserInfo(profileSelectors);
 const api = new Api();
 const PopupImage = new PopupWithImage(".popup_type_image");
-PopupImage.setEventListeners();
-
 let deleteCard, deleteCardId;
 
 const PopupConfide = new PopupWithForm(".popup__remove-card", () => {
@@ -40,17 +27,6 @@ const PopupConfide = new PopupWithForm(".popup__remove-card", () => {
       renderRemoving(false, buttonConfidence);
     });
 });
-PopupConfide.setEventListeners();
-
-export function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  window.removeEventListener("keydown", handleEscDown);
-}
-//функция открытия попапа
-export function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  window.addEventListener("keydown", handleEscDown);
-}
 //функция загрузки
 export function renderLoading(isLoading, button) {
   if (isLoading) {
@@ -67,9 +43,6 @@ export function renderRemoving(isRemoving, button) {
     button.textContent = "Да";
   }
 }
-
-//!! далее Денис Улесов добавляет функции колл-бэков для передачи в листенеры класса Card в файле index.js
-
 //!!функция клика на Like
 export function likeHandler() {
   if (
@@ -103,72 +76,18 @@ export function likeHandler() {
 //!!функция клика на Trash
 export function trashHandler(card, id) {
   deleteCard = card;
-  console.log("deleteCard: ", deleteCard);
   deleteCardId = id;
-  console.log("deleteCardId: ", deleteCardId);
   PopupConfide.open();
-  // buttonConfidence.addEventListener("click", (event) => {
-  //   event.preventDefault();
-  //   renderRemoving(true, buttonConfidence);
-  //   api
-  //     .deleteCard(this._id)
-  //     .then(() => {
-  //       this._element.remove();
-  //       closePopup(popupConfidence);
-  //       //PopupForm.close()
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Ошибка при удалении карточки: ${error}`);
-  //     })
-  //     .finally(() => {
-  //       renderRemoving(false, buttonConfidence);
-  //     });
-  // });
-  // openPopup(popupConfidence);
-  // //PopupForm.open()
 }
 //!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
   PopupImage.open(this._name, this._link);
 }
-
-// //!! Улесов Денис функция добавления новой карточки по клику на Submit попапа добавления карточки
-// export function addCardNew(event) {
-//   event.preventDefault();
-//   const locationValue = inputElementLocation.value;
-//   const linkValue = inputElementLink.value;
-//   renderLoading(true, buttonFormAdd);
-//   api
-//     .postNewCard(locationValue, linkValue)
-//     .then((result) => {
-//       const section = new Section(
-//         {
-//           items: [],
-//           renderer: function (element, userId) {
-//             const cardElement = new Card(
-//               element,
-//               userId,
-//               cardTemplateSelector,
-//               {
-//                 likeHandler,
-//                 trashHandler,
-//                 imageClickHandler,
-//               }
-//             );
-//             return cardElement.generate();
-//           },
-//         },
-//         placeSectionSelector
-//       );
-//       section.addItem(result, result.owner._id);
-//       // renderCard(result, result.owner._id, placeSection);
-//       buttonFormAdd.disabled = true;
-//       buttonFormAdd.classList.add(validationConfig.inactiveButtonClass);
-//       formElementLocation.reset(); //очистить форму
-//       closePopup(popupAdd);
-//     })
-//     .catch((error) => console.log(`Ошибка: ${error}`))
-//     .finally(() => {
-//       renderLoading(false, buttonFormAdd);
-//     });
-// }
+// функция открытия попапа редактирования профиля с начальными данными
+export function openProfilePopup() {
+  const infoProfile = infoUser.getUserInfo();
+  nameInput.value = infoProfile.name;
+  jobInput.value = infoProfile.about;
+}
+PopupConfide.setEventListeners();
+PopupImage.setEventListeners();
