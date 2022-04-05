@@ -46,6 +46,7 @@ import { PopupWithImage } from "./PopupWithImage.js";
 
 const api = new Api();
 const infoUser = new UserInfo(profileSelectors);
+const PopupImage = new PopupWithImage(".popup_type_image");
 
 const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet);
 editProfileForm.enableValidation();
@@ -94,6 +95,7 @@ const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
 });
 PopupFormProfile.setEventListeners()
 PopupFormAvatar.setEventListeners()
+PopupImage.setEventListeners()
 // обработчик попапа редактирования профиля
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
