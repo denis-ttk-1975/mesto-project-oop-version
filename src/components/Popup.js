@@ -14,7 +14,7 @@ export class Popup {
     window.removeEventListener("keydown", this._handleEscClose);
   }
   //метод для закрытия попапа при нажатии ESC
-  _handleEscClose(event) {
+  _handleEscClose = (event) => {
     if (event.key === "Escape") {
       this.close();
     }
