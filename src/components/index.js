@@ -6,7 +6,7 @@ import {
   handleAvatarSubmit,
   openProfilePopup,
 } from "./modal.js";
-import { addCard, renderCard } from "./card.js";
+
 import {
   buttonEdit,
   buttonAdd,
@@ -32,7 +32,7 @@ import {
 } from "./constants.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
-import { Card } from "./cardClass.js";
+import { Card } from "./card.js";
 import {
   likeHandler,
   trashHandler,

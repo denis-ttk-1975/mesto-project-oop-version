@@ -18,7 +18,7 @@ import { PopupWithImage } from "./PopupWithImage.js";
 //утилитарные функции
 import { Api } from "./api.js";
 import { Section } from "./section.js";
-import { Card } from "./cardClass.js";
+import { Card } from "./card.js";
 import { openPopupConfidenceNew } from "./modal.js";
 import { handleEscDown } from "./modal.js";
 const api = new Api();
