@@ -25,20 +25,22 @@ const api = new Api();
 const PopupImage = new PopupWithImage(".popup_type_image");
 PopupImage.setEventListeners();
 
-// const PopupConfide = new PopupWithForm(".popup__remove-card", ({}) => {
-//   renderRemoving(true, buttonConfidence);
-//   api
-//     .deleteCard(как передать сюда id карты ????)
-//     .then(() => {
-//       this._element.remove();
-//       PopupConfide.close();
-//     })
-//     .catch((err) => console.log(`Ошибка: ${err}`))
-//     .finally(() => {
-//       renderRemoving(false, buttonConfidence);
-//     });
-// });
-// PopupConfide.setEventListeners();
+let deleteCard, deleteCardId;
+
+const PopupConfide = new PopupWithForm(".popup__remove-card", () => {
+  renderRemoving(true, buttonConfidence);
+  api
+    .deleteCard(deleteCardId)
+    .then(() => {
+      deleteCard.remove();
+      PopupConfide.close();
+    })
+    .catch((err) => console.log(`Ошибка: ${err}`))
+    .finally(() => {
+      renderRemoving(false, buttonConfidence);
+    });
+});
+PopupConfide.setEventListeners();
 
 export function closePopup(popup) {
   popup.classList.remove("popup_opened");
@@ -99,28 +101,31 @@ export function likeHandler() {
   }
 }
 //!!функция клика на Trash
-export function trashHandler(id) {
-  // const idCardForDelete = id;
-  // PopupConfide.open();
-  buttonConfidence.addEventListener("click", (event) => {
-    event.preventDefault();
-    renderRemoving(true, buttonConfidence);
-    api
-      .deleteCard(this._id)
-      .then(() => {
-        this._element.remove();
-        closePopup(popupConfidence);
-        //PopupForm.close()
-      })
-      .catch((error) => {
-        console.log(`Ошибка при удалении карточки: ${error}`);
-      })
-      .finally(() => {
-        renderRemoving(false, buttonConfidence);
-      });
-  });
-  openPopup(popupConfidence);
-  //PopupForm.open()
+export function trashHandler(card, id) {
+  deleteCard = card;
+  console.log("deleteCard: ", deleteCard);
+  deleteCardId = id;
+  console.log("deleteCardId: ", deleteCardId);
+  PopupConfide.open();
+  // buttonConfidence.addEventListener("click", (event) => {
+  //   event.preventDefault();
+  //   renderRemoving(true, buttonConfidence);
+  //   api
+  //     .deleteCard(this._id)
+  //     .then(() => {
+  //       this._element.remove();
+  //       closePopup(popupConfidence);
+  //       //PopupForm.close()
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Ошибка при удалении карточки: ${error}`);
+  //     })
+  //     .finally(() => {
+  //       renderRemoving(false, buttonConfidence);
+  //     });
+  // });
+  // openPopup(popupConfidence);
+  // //PopupForm.open()
 }
 //!!функция клика на самой картинке для открытия попапа самой карточки
 export function imageClickHandler() {
