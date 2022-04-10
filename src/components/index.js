@@ -1,10 +1,9 @@
 import "../pages/index.css";
-import { renderLoading } from "./utils.js";
+import { renderLoading, renderRemoving } from "./utils.js";
 import {
   buttonEdit,
   buttonAdd,
   buttonAvatar,
-  formElementLocation,
   addCardFormFieldSet,
   avatarFormFieldSet,
   validationConfig,
@@ -15,15 +14,19 @@ import {
   buttonProfile,
   buttonFormAdd,
   buttonAvatarPhoto,
+  nameInput,
+  jobInput,
+  buttonConfidence
 } from "./constants.js";
 import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
 import { Card } from "./card.js";
-import { likeHandler, trashHandler, imageClickHandler, openProfilePopup} from "./utils.js";
 import { Section } from "./section.js";
 import { UserInfo } from "./UserInfo.js";
 import { PopupWithForm } from "./PopupWithForm.js";
+import { PopupWithImage } from "./PopupWithImage.js";
 
+const PopupImage = new PopupWithImage(".popup_type_image");
 const api = new Api();
 const infoUser = new UserInfo(profileSelectors);
 
@@ -98,7 +101,6 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
       );
       section.addItem(result, result.owner._id);
       addCardForm.validate();
-      formElementLocation.reset(); //очистить форму
       PopupFormAddCard.close();
     })
     .catch((error) => console.log(`Ошибка: ${error}`))
@@ -106,9 +108,25 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
       renderLoading(false, buttonFormAdd);
     });
 });
+let deleteCard, deleteCardId;
+const PopupConfide = new PopupWithForm(".popup__remove-card", () => {
+  renderRemoving(true, buttonConfidence);
+  api
+    .deleteCard(deleteCardId)
+    .then(() => {
+      deleteCard.remove();
+      PopupConfide.close();
+    })
+    .catch((err) => console.log(`Ошибка: ${err}`))
+    .finally(() => {
+      renderRemoving(false, buttonConfidence);
+    });
+});
 PopupFormAddCard.setEventListeners();
 PopupFormProfile.setEventListeners();
 PopupFormAvatar.setEventListeners();
+PopupConfide.setEventListeners();
+PopupImage.setEventListeners();
 // обработчик попапа редактирования профиля
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
@@ -123,6 +141,52 @@ buttonAdd.addEventListener("click", function () {
 buttonAvatar.addEventListener("click", function () {
   PopupFormAvatar.open();
 });
+//!!функция клика на Like
+function likeHandler() {
+  if (
+    this._element
+      .querySelector(".card__like")
+      .classList.contains("card__like_pos_active")
+  ) {
+    api
+      .deleteLikeOnCard(this._id)
+      .then((data) => {
+        this._element.querySelector(".card__like-counter").textContent =
+          data.likes.length;
+        this._element
+          .querySelector(".card__like")
+          .classList.remove("card__like_pos_active");
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`));
+  } else {
+    api
+      .putLikeOnCard(this._id)
+      .then((data) => {
+        this._element.querySelector(".card__like-counter").textContent =
+          data.likes.length;
+        this._element
+          .querySelector(".card__like")
+          .classList.add("card__like_pos_active");
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`));
+  }
+}
+//!!функция клика на Trash
+function trashHandler(card, id) {
+  deleteCard = card;
+  deleteCardId = id;
+  PopupConfide.open();
+}
+//!!функция клика на самой картинке для открытия попапа самой карточки
+function imageClickHandler() {
+  PopupImage.open(this._name, this._link);
+}
+// функция открытия попапа редактирования профиля с начальными данными
+function openProfilePopup() {
+  const infoProfile = infoUser.getUserInfo();
+  nameInput.value = infoProfile.name;
+  jobInput.value = infoProfile.about;
+}
 //загрузка данных
 const promises = [api.getInitialCards(), api.getUserInfo()];
 Promise.all(promises)

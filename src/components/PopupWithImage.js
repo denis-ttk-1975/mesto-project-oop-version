@@ -13,11 +13,3 @@ export class PopupWithImage extends Popup {
     super.open();
   }
 }
-// или так:
-// open(event) {
-//     this.title.textContent = event.target.alt;
-//     this.image.alt = event.target.alt;
-//     this.image.src = event.target.src;
-//     super.open()
-//   }
-//}

@@ -1,9 +1,3 @@
-//! функция проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
-function findUserLike(likeData, myUserId) {
-  return likeData.some(function (likerData) {
-    return myUserId === likerData._id;
-  });
-}
 // ОБЪЯВЛЕНИЕ КЛАССА Card
 export class Card {
   // в конструктор передаются объект с данными о карточке, ID текущего пользователя,
@@ -53,6 +47,12 @@ export class Card {
         this._imageClickHandler();
       });
   }
+// метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
+  _findUserLike(likeData, myUserId) {
+    return likeData.some(function (likerData) {
+      return myUserId === likerData._id;
+    });
+  }
 
   generate() {
     this._element = this._getElement();
@@ -65,7 +65,7 @@ export class Card {
       this._likes.length;
 
     // проверяем ставил ли наш пользователь лайк и если ставил то красим сердечко
-    if (findUserLike(this._likes, this._userId)) {
+    if (this._findUserLike(this._likes, this._userId)) {
       this._element
         .querySelector(".card__like")
         .classList.add("card__like_pos_active");
