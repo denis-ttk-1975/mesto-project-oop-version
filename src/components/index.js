@@ -27,13 +27,19 @@ import { PopupWithForm } from "./PopupWithForm.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 
 const PopupImage = new PopupWithImage(".popup_type_image");
-const api = new Api();
+const api = new Api({
+  baseURL: "https://nomoreparties.co/v1/plus-cohort7",
+  headers: {
+    authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
+    "Content-Type": "application/json",
+  },
+})
 const section = new Section(
   {
     items: {},
     renderer: function (element, userId) {
       const cardElement = new Card(element, userId, cardTemplateSelector, {
-        likeHandler,
+        handleLike,
         trashHandler,
         imageClickHandler,
       });
@@ -136,33 +142,19 @@ buttonAvatar.addEventListener("click", function () {
   PopupFormAvatar.open();
 });
 //!!функция клика на Like
-function likeHandler() {
-  if (
-    this._element
-      .querySelector(".card__like")
-      .classList.contains("card__like_pos_active")
-  ) {
-    api
-      .deleteLikeOnCard(this._id)
-      .then((data) => {
-        this._element.querySelector(".card__like-counter").textContent =
-          data.likes.length;
-        this._element
-          .querySelector(".card__like")
-          .classList.remove("card__like_pos_active");
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+const handleLike = (card) => {
+  if (card.getLike()) {
+    api.deleteLikeOnCard(card.getId())
+    .then((res) => {
+      card.updateLikes(res)
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
   } else {
-    api
-      .putLikeOnCard(this._id)
-      .then((data) => {
-        this._element.querySelector(".card__like-counter").textContent =
-          data.likes.length;
-        this._element
-          .querySelector(".card__like")
-          .classList.add("card__like_pos_active");
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    api.putLikeOnCard(card.getId())
+    .then((res) => {
+      card.updateLikes(res)
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
   }
 }
 //!!функция клика на Trash

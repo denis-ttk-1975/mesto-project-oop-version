@@ -6,7 +6,7 @@ export class Card {
     card,
     userId,
     cardTemplateSelector,
-    { likeHandler, trashHandler, imageClickHandler }
+    { handleLike, trashHandler, imageClickHandler }
   ) {
     this._name = card.name;
     this._link = card.link;
@@ -16,38 +16,32 @@ export class Card {
     this._cardTemplate = document.querySelector(cardTemplateSelector).content;
     this._userId = userId;
     // колл-бэки для слушателей
-    this._likeHandler = likeHandler;
+    this._handleLike = handleLike;
     this._trashHandler = trashHandler;
     this._imageClickHandler = imageClickHandler;
   }
-
+  
   _getElement() {
-    const cardElement = this._cardTemplate
-      .querySelector(".card")
-      .cloneNode(true);
+    const cardElement = this._cardTemplate.querySelector(".card").cloneNode(true);
     return cardElement;
   }
 
   _setEventListeners() {
     this._element.querySelector(".card__like").addEventListener("click", () => {
-      this._likeHandler();
+      this._handleLike(this);
     });
 
     if (this._element.querySelector(".card__trash")) {
-      this._element
-        .querySelector(".card__trash")
-        .addEventListener("click", () => {
+      this._element.querySelector(".card__trash").addEventListener("click", () => {
           this._trashHandler(this._element, this._id);
         });
     }
 
-    this._element
-      .querySelector(".card__image")
-      .addEventListener("click", () => {
+    this._element.querySelector(".card__image").addEventListener("click", () => {
         this._imageClickHandler();
       });
   }
-// метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
+  // метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
   _findUserLike(likeData, myUserId) {
     return likeData.some(function (likerData) {
       return myUserId === likerData._id;
@@ -61,8 +55,7 @@ export class Card {
     this._element.querySelector(".card__image").src = this._link;
     this._element.querySelector(".card__description").textContent = this._name;
     this._element.id = this._id;
-    this._element.querySelector(".card__like-counter").textContent =
-      this._likes.length;
+    this._element.querySelector(".card__like-counter").textContent = this._likes.length;
 
     // проверяем ставил ли наш пользователь лайк и если ставил то красим сердечко
     if (this._findUserLike(this._likes, this._userId)) {
@@ -80,5 +73,19 @@ export class Card {
     this._setEventListeners();
 
     return this._element;
+  }
+  //метод для установки или удаления лайка и счетчика
+  updateLikes(data) {
+    this._likes = data.likes;
+    this._element.querySelector(".card__like").classList.toggle("card__like_pos_active");
+    this._element.querySelector(".card__like-counter").textContent = data.likes.length;
+  }
+//метод, возвращающий факт наличия лайка
+  getLike() {
+    return this._element.querySelector(".card__like").classList.contains("card__like_pos_active");
+  }
+  //метод, возвращающий id
+  getId() {
+    return this._id;
   }
 }
