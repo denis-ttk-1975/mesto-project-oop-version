@@ -24,7 +24,14 @@ import { Section } from "./Section.js";
 import { UserInfo } from "./UserInfo.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 
-const api = new Api();
+const api = new Api({
+  baseURL: "https://nomoreparties.co/v1/plus-cohort7",
+  headers: {
+    authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
+    "Content-Type": "application/json",
+  },
+})
+
 const section = new Section(
   {
     items: {},

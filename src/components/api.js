@@ -1,21 +1,11 @@
 export class Api {
-  constructor() {
-    //Мне нравится идея указать конфиг в конструкторе
-    //Если будут возражения ревьювера, то можно исправить
-    this._apiConfig = {
-      baseURL: "https://nomoreparties.co/v1/plus-cohort7",
-      headers: {
-        authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
-        "Content-Type": "application/json",
-      },
-    };
+  constructor(config) {
+    this._apiConfig = config
   }
 
   //функция проверки ответа сервера на запрос
   _checkResponse(res) {
-    if (res.ok) {
-      return res.json();
-    }
+    if (res.ok) return res.json();
 
     return Promise.reject(`Ошибка: ${res.status}`);
   }
