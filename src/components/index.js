@@ -20,11 +20,24 @@ import { FormValidator } from "./formValidator.js";
 import { Api } from "./api.js";
 import { Card } from "./card.js";
 import { likeHandler, trashHandler, imageClickHandler, openProfilePopup} from "./utils.js";
-import { Section } from "./section.js";
+import { Section } from "./Section.js";
 import { UserInfo } from "./UserInfo.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 
 const api = new Api();
+const section = new Section(
+  {
+    items: {},
+    renderer: function (element, userId) {
+      const cardElement = new Card(element, userId, cardTemplateSelector, {
+        likeHandler,
+        trashHandler,
+        imageClickHandler,
+      });
+      return cardElement.generate();
+    }
+  }, placeSectionSelector)
+
 const infoUser = new UserInfo(profileSelectors);
 
 const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet);
@@ -77,25 +90,6 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
   api
     .postNewCard(objInputs.location, objInputs.link)
     .then((result) => {
-      const section = new Section(
-        {
-          items: [],
-          renderer: function (element, userId) {
-            const cardElement = new Card(
-              element,
-              userId,
-              cardTemplateSelector,
-              {
-                likeHandler,
-                trashHandler,
-                imageClickHandler,
-              }
-            );
-            return cardElement.generate();
-          },
-        },
-        placeSectionSelector
-      );
       section.addItem(result, result.owner._id);
       addCardForm.validate();
       formElementLocation.reset(); //очистить форму
@@ -123,25 +117,12 @@ buttonAdd.addEventListener("click", function () {
 buttonAvatar.addEventListener("click", function () {
   PopupFormAvatar.open();
 });
+
 //загрузка данных
 const promises = [api.getInitialCards(), api.getUserInfo()];
 Promise.all(promises)
   .then(([cards, userData]) => {
     infoUser.setUserInfo(userData); //метод экземпляра класса UserInfo для обновления информации о профиле
-    const section = new Section(
-      {
-        items: cards,
-        renderer: function (element, userId) {
-          const cardElement = new Card(element, userId, cardTemplateSelector, {
-            likeHandler,
-            trashHandler,
-            imageClickHandler,
-          });
-          return cardElement.generate();
-        },
-      },
-      placeSectionSelector
-    );
-    section.renderAll(userData._id);
+    section.renderAll(cards, userData._id);
   })
   .catch((err) => console.log(`Ошибка загрузки данных: ${err}`));
