@@ -16,7 +16,7 @@ import {
   buttonFormAdd,
   buttonAvatarPhoto,
 } from "./constants.js";
-import { FormValidator } from "./formValidator.js";
+import { FormValidator } from "./FormValidator.js";
 import { Api } from "./api.js";
 import { Card } from "./card.js";
 import { likeHandler, trashHandler, imageClickHandler, openProfilePopup} from "./utils.js";
@@ -47,14 +47,24 @@ const section = new Section(
 
 const infoUser = new UserInfo(profileSelectors);
 
-const editProfileForm = new FormValidator(validationConfig, editProfileFormFieldSet);
-editProfileForm.enableValidation();
+//Запускаем валидацию полей форм
+const formValidators = {};
 
-const addCardForm = new FormValidator(validationConfig, addCardFormFieldSet);
-addCardForm.enableValidation();
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
 
-const avatarForm = new FormValidator(validationConfig, avatarFormFieldSet);
-avatarForm.enableValidation();
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    const formName = formElement.getAttribute('name')
+
+    formValidators[formName] = validator
+    validator.enableValidation()
+  })
+}
+
+//Собираем формы и включаем валидацию
+enableValidation(validationConfig)
+
 // активировать попап для редактирования профиля
 const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
   renderLoading(true, buttonProfile);
@@ -83,7 +93,6 @@ const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
         ...infoUser.getUserInfo(),
         avatar: result.avatar,
       });
-      avatarForm.validate();
       PopupFormAvatar.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
@@ -98,7 +107,6 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
     .postNewCard(objInputs.location, objInputs.link)
     .then((result) => {
       section.addItem(result, result.owner._id);
-      addCardForm.validate();
       formElementLocation.reset(); //очистить форму
       PopupFormAddCard.close();
     })
@@ -114,15 +122,18 @@ PopupFormAvatar.setEventListeners();
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
   PopupFormProfile.open();
-  editProfileForm.validate();
+  formValidators.formEditProfile.resetValidation()
 });
+
 //открыть попап для добавления карточки
 buttonAdd.addEventListener("click", function () {
   PopupFormAddCard.open();
+  formValidators.formAddPicture.resetValidation()
 });
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
   PopupFormAvatar.open();
+  formValidators.formAvatar.resetValidation()
 });
 
 //загрузка данных

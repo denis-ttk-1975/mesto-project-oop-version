@@ -26,6 +26,17 @@ export class FormValidator {
     })
   }
 
+  //Изменяет состояние кнопки и скрывает сообщение об ошибках
+  resetValidation() {
+    this._toggleButtonState()
+
+
+    this._inputs.forEach((input) => {
+      const errorElement = this._form.querySelector(`.form__item_type_error-${input.id}`)
+      this._hideInputError(input, errorElement)
+    })
+  }
+
   //функця валидации полей - показать ошибку
   _showInputError(inputElement, errorElement, errorMessage) {
     errorElement.textContent = errorMessage
@@ -35,7 +46,6 @@ export class FormValidator {
 
   //функця валидации полей - скрыть ошибку
   _hideInputError(inputElement, errorElement) {
-    errorElement.textContent = ''
     errorElement.classList.remove(this._validationConfig.errorClass)
     inputElement.classList.remove(this._validationConfig.inputErrorClass)
   }
