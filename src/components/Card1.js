@@ -6,7 +6,7 @@ export class Card {
     card,
     userId,
     cardTemplateSelector,
-    { handleLike, trashHandler, imageClickHandler }
+    { handleLike, handleTrashClick, clickImage }
   ) {
     this._name = card.name;
     this._link = card.link;
@@ -17,8 +17,8 @@ export class Card {
     this._userId = userId;
     // колл-бэки для слушателей
     this._handleLike = handleLike;
-    this._trashHandler = trashHandler;
-    this._imageClickHandler = imageClickHandler;
+    this._handleTrashClick = handleTrashClick;
+    this._clickImage = clickImage;
   }
   
   _getElement() {
@@ -33,12 +33,12 @@ export class Card {
 
     if (this._element.querySelector(".card__trash")) {
       this._element.querySelector(".card__trash").addEventListener("click", () => {
-          this._trashHandler(this._element, this._id);
+          this._handleTrashClick(this._element, this._id);
         });
     }
 
-    this._element.querySelector(".card__image").addEventListener("click", () => {
-        this._imageClickHandler();
+    this._cardImage.addEventListener("click", () => {
+        this._clickImage();
       });
   }
   // метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
@@ -47,12 +47,26 @@ export class Card {
       return myUserId === likerData._id;
     });
   }
-
-  generate() {
+  //метод для установки или удаления лайка и счетчика
+  updateLikes(data) {
+    this._likes = data.likes;
+    this._element.querySelector(".card__like").classList.toggle("card__like_pos_active");
+    this._element.querySelector(".card__like-counter").textContent = data.likes.length;
+  }
+//метод, возвращающий факт наличия лайка
+  getLike() {
+    return this._element.querySelector(".card__like").classList.contains("card__like_pos_active");
+  }
+  //метод, возвращающий id
+  getId() {
+    return this._id;
+  }
+  generateCard() {
     this._element = this._getElement();
 
-    this._element.querySelector(".card__image").alt = this._name;
-    this._element.querySelector(".card__image").src = this._link;
+    this._cardImage = this._element.querySelector(".card__image");
+    this._cardImage.alt = this._name;
+    this._cardImage.src = this._link;
     this._element.querySelector(".card__description").textContent = this._name;
     this._element.id = this._id;
     this._element.querySelector(".card__like-counter").textContent = this._likes.length;
@@ -73,19 +87,5 @@ export class Card {
     this._setEventListeners();
 
     return this._element;
-  }
-  //метод для установки или удаления лайка и счетчика
-  updateLikes(data) {
-    this._likes = data.likes;
-    this._element.querySelector(".card__like").classList.toggle("card__like_pos_active");
-    this._element.querySelector(".card__like-counter").textContent = data.likes.length;
-  }
-//метод, возвращающий факт наличия лайка
-  getLike() {
-    return this._element.querySelector(".card__like").classList.contains("card__like_pos_active");
-  }
-  //метод, возвращающий id
-  getId() {
-    return this._id;
   }
 }

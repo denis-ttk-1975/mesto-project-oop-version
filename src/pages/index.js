@@ -1,74 +1,69 @@
 import "../pages/index.css";
-import { renderLoading, renderRemoving } from "./utils.js";
+import { renderLoading, renderRemoving } from "../utils/utils.js";
 import {
   buttonEdit,
   buttonAdd,
   buttonAvatar,
-  addCardFormFieldSet,
-  avatarFormFieldSet,
   validationConfig,
   placeSectionSelector,
   profileSelectors,
-  editProfileFormFieldSet,
   cardTemplateSelector,
   buttonProfile,
   buttonFormAdd,
   buttonAvatarPhoto,
   nameInput,
   jobInput,
-  buttonConfidence,
-} from "./constants.js";
-import { FormValidator } from "./FormValidator.js";
-import { Api } from "./api.js";
-import { Card } from "./card.js";
-import { Section } from "./section.js";
-import { UserInfo } from "./UserInfo.js";
-import { PopupWithForm } from "./PopupWithForm.js";
-import { PopupWithImage } from "./PopupWithImage.js";
+  buttonConfidence
+} from "../utils/constants.js";
+import { FormValidator } from "../components/FormValidator1.js";
+import { Api } from "../components/Api1.js";
+import { Card } from "../components/Card1.js";
+import { Section } from "../components/Section1.js";
+import { UserInfo } from "../components/UserInfo.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
 
-const PopupImage = new PopupWithImage(".popup_type_image");
+const popupImage = new PopupWithImage(".popup_type_image");
 const api = new Api({
   baseURL: "https://nomoreparties.co/v1/plus-cohort7",
   headers: {
     authorization: "bb6ff8a2-6249-481e-b654-c07491020021",
     "Content-Type": "application/json",
   },
-})
+});
 const section = new Section(
   {
     items: {},
     renderer: function (element, userId) {
       const cardElement = new Card(element, userId, cardTemplateSelector, {
         handleLike,
-        trashHandler,
-        imageClickHandler,
+        handleTrashClick,
+        clickImage,
       });
-      return cardElement.generate();
-    }
-  }, placeSectionSelector)
+      return cardElement.generateCard();
+    },
+  },
+  placeSectionSelector
+);
 
 const infoUser = new UserInfo(profileSelectors);
-
 //Запускаем валидацию полей форм
 const formValidators = {};
 
 const enableValidation = (config) => {
-  const formList = Array.from(document.querySelectorAll(config.formSelector))
-
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
-    const validator = new FormValidator(config, formElement)
-    const formName = formElement.getAttribute('name')
-
-    formValidators[formName] = validator
-    validator.enableValidation()
-  })
-}
-
+    const validator = new FormValidator(config, formElement);
+    const formName = formElement.getAttribute("name");
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
 //Собираем формы и включаем валидацию
-enableValidation(validationConfig)
+enableValidation(validationConfig);
 
 // активировать попап для редактирования профиля
-const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
+const popupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
   renderLoading(true, buttonProfile);
   api
     .patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
@@ -78,7 +73,7 @@ const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
         name: result.name,
         about: result.about,
       });
-      PopupFormProfile.close();
+      popupFormProfile.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => {
@@ -86,7 +81,7 @@ const PopupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
     });
 });
 //экземпляр класса для открытия попапа аватара
-const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
+const popupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
   renderLoading(true, buttonAvatarPhoto);
   api
     .patchAvatar(objInputs.avatarProfile)
@@ -95,7 +90,7 @@ const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
         ...infoUser.getUserInfo(),
         avatar: result.avatar,
       });
-      PopupFormAvatar.close();
+      popupFormAvatar.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => {
@@ -103,14 +98,13 @@ const PopupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
     });
 });
 // активировать попап для добавления карточки
-const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
+const popupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
   renderLoading(true, buttonFormAdd);
   api
     .postNewCard(objInputs.location, objInputs.link)
     .then((result) => {
       section.addItem(result, result.owner._id);
-      formElementLocation.reset(); //очистить форму
-      PopupFormAddCard.close();
+      popupFormAddCard.close();
     })
     .catch((error) => console.log(`Ошибка: ${error}`))
     .finally(() => {
@@ -118,68 +112,69 @@ const PopupFormAddCard = new PopupWithForm(".popup_type_add", (objInputs) => {
     });
 });
 let deleteCard, deleteCardId;
-const PopupConfide = new PopupWithForm(".popup__remove-card", () => {
+const popupConfide = new PopupWithForm(".popup__remove-card", () => {
   renderRemoving(true, buttonConfidence);
   api
     .deleteCard(deleteCardId)
     .then(() => {
       deleteCard.remove();
-      PopupConfide.close();
+      popupConfide.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
     .finally(() => {
       renderRemoving(false, buttonConfidence);
     });
 });
-PopupFormAddCard.setEventListeners();
-PopupFormProfile.setEventListeners();
-PopupFormAvatar.setEventListeners();
-PopupConfide.setEventListeners();
-PopupImage.setEventListeners();
-// обработчик попапа редактирования профиля
+popupFormAddCard.setEventListeners();
+popupFormProfile.setEventListeners();
+popupFormAvatar.setEventListeners();
+popupConfide.setEventListeners();
+popupImage.setEventListeners();
+//обработчик попапа редактирования профиля
 buttonEdit.addEventListener("click", function () {
   openProfilePopup();
-  PopupFormProfile.open();
-  formValidators.formEditProfile.resetValidation()
+  popupFormProfile.open();
+  formValidators.formEditProfile.resetValidation();
 });
-
-//открыть попап для добавления карточки
+//обработчик попапа для добавления карточки
 buttonAdd.addEventListener("click", function () {
-  PopupFormAddCard.open();
-  formValidators.formAddPicture.resetValidation()
+  popupFormAddCard.open();
+  formValidators.formAddPicture.resetValidation();
 });
 //открыть попап для редактирования аватара
 buttonAvatar.addEventListener("click", function () {
-  PopupFormAvatar.open();
-  formValidators.formAvatar.resetValidation()
+  popupFormAvatar.open();
+  formValidators.formAvatar.resetValidation();
 });
-//!!функция клика на Like
+//функция клика на Like
 const handleLike = (card) => {
   if (card.getLike()) {
-    api.deleteLikeOnCard(card.getId())
-    .then((res) => {
-      card.updateLikes(res)
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    api
+      .deleteLikeOnCard(card.getId())
+      .then((res) => {
+        card.updateLikes(res);
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`));
   } else {
-    api.putLikeOnCard(card.getId())
-    .then((res) => {
-      card.updateLikes(res)
-    })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    api
+      .putLikeOnCard(card.getId())
+      .then((res) => {
+        card.updateLikes(res);
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`));
   }
-}
-//!!функция клика на Trash
-function trashHandler(card, id) {
+};
+//функция клика на Trash
+function handleTrashClick(card, id) {
   deleteCard = card;
   deleteCardId = id;
-  PopupConfide.open();
+  popupConfide.open();
 }
-//!!функция клика на самой картинке для открытия попапа самой карточки
-function imageClickHandler() {
-  PopupImage.open(this._name, this._link);
+//функция клика на самой картинке для открытия попапа самой карточки
+function clickImage() {
+  popupImage.open(this._name, this._link);
 }
-// функция открытия попапа редактирования профиля с начальными данными
+//функция открытия попапа редактирования профиля с начальными данными
 function openProfilePopup() {
   const infoProfile = infoUser.getUserInfo();
   nameInput.value = infoProfile.name;
