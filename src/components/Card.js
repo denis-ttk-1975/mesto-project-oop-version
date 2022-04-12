@@ -20,7 +20,7 @@ export class Card {
     this._handleTrashClick = handleTrashClick;
     this._clickImage = clickImage;
   }
-  
+
   _getElement() {
     const cardElement = this._cardTemplate.querySelector(".card").cloneNode(true);
     return cardElement;
@@ -38,7 +38,7 @@ export class Card {
     }
 
     this._cardImage.addEventListener("click", () => {
-        this._clickImage();
+        this._clickImage(this._name, this._link);
       });
   }
   // метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере

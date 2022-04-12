@@ -171,9 +171,8 @@ function handleTrashClick(card, id) {
   popupConfide.open();
 }
 //функция клика на самой картинке для открытия попапа самой карточки
-function clickImage() {
-  popupImage.open(this._name, this._link);
-}
+const clickImage = (name, link) => popupImage.open(name, link)
+
 //функция открытия попапа редактирования профиля с начальными данными
 function openProfilePopup() {
   const infoProfile = infoUser.getUserInfo();
