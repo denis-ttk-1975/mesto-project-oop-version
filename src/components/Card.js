@@ -20,26 +20,28 @@ export class Card {
     this._handleTrashClick = handleTrashClick;
     this._clickImage = clickImage;
   }
-  
+
   _getElement() {
-    const cardElement = this._cardTemplate.querySelector(".card").cloneNode(true);
+    const cardElement = this._cardTemplate
+      .querySelector(".card")
+      .cloneNode(true);
     return cardElement;
   }
 
   _setEventListeners() {
-    this._element.querySelector(".card__like").addEventListener("click", () => {
+    this._cardLike.addEventListener("click", () => {
       this._handleLike(this);
     });
 
-    if (this._element.querySelector(".card__trash")) {
-      this._element.querySelector(".card__trash").addEventListener("click", () => {
-          this._handleTrashClick(this._element, this._id);
-        });
+    if (this._cardTrash) {
+      this._cardTrash.addEventListener("click", () => {
+        this._handleTrashClick(this._element, this._id);
+      });
     }
 
     this._cardImage.addEventListener("click", () => {
-        this._clickImage();
-      });
+      this._clickImage();
+    });
   }
   // метод проверки есть ли у карточки лайк поставленный текущим пользователем ранее и сохраненный в массиве на сервере
   _findUserLike(likeData, myUserId) {
@@ -50,12 +52,12 @@ export class Card {
   //метод для установки или удаления лайка и счетчика
   updateLikes(data) {
     this._likes = data.likes;
-    this._element.querySelector(".card__like").classList.toggle("card__like_pos_active");
-    this._element.querySelector(".card__like-counter").textContent = data.likes.length;
+    this._cardLike.classList.toggle("card__like_pos_active");
+    this._cardLikeCounter.textContent = data.likes.length;
   }
-//метод, возвращающий факт наличия лайка
+  //метод, возвращающий факт наличия лайка
   getLike() {
-    return this._element.querySelector(".card__like").classList.contains("card__like_pos_active");
+    return this._cardLike.classList.contains("card__like_pos_active");
   }
   //метод, возвращающий id
   getId() {
@@ -65,23 +67,26 @@ export class Card {
     this._element = this._getElement();
 
     this._cardImage = this._element.querySelector(".card__image");
+    this._cardDescription = this._element.querySelector(".card__description");
+    this._cardLikeCounter = this._element.querySelector(".card__like-counter");
+    this._cardLike = this._element.querySelector(".card__like");
+    this._cardTrash = this._element.querySelector(".card__trash");
+
     this._cardImage.alt = this._name;
     this._cardImage.src = this._link;
-    this._element.querySelector(".card__description").textContent = this._name;
+    this._cardDescription.textContent = this._name;
     this._element.id = this._id;
-    this._element.querySelector(".card__like-counter").textContent = this._likes.length;
+    this._cardLikeCounter.textContent = this._likes.length;
 
     // проверяем ставил ли наш пользователь лайк и если ставил то красим сердечко
     if (this._findUserLike(this._likes, this._userId)) {
-      this._element
-        .querySelector(".card__like")
-        .classList.add("card__like_pos_active");
+      this._cardLike.classList.add("card__like_pos_active");
     }
 
     // удаляем кнопку удаления (корзинку) если карточка создана другим пользователем
-    const cardTrash = this._element.querySelector(".card__trash");
+
     if (this._owner._id !== this._userId) {
-      cardTrash.remove();
+      this._cardTrash.remove();
     }
     // генерируем слушатели на лайк, корзину и большую карточку
     this._setEventListeners();
