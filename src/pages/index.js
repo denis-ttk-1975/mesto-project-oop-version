@@ -13,7 +13,7 @@ import {
   buttonAvatarPhoto,
   nameInput,
   jobInput,
-  buttonConfidence
+  buttonConfidence,
 } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Api } from "../components/Api.js";
@@ -68,11 +68,7 @@ const popupFormProfile = new PopupWithForm(".popup_type_edit", (objInputs) => {
   api
     .patchProfile(objInputs.nameProfile, objInputs.descriptionProfile)
     .then((result) => {
-      infoUser.setUserInfo({
-        ...infoUser.getUserInfo(),
-        name: result.name,
-        about: result.about,
-      });
+      infoUser.setUserInfo(result);
       popupFormProfile.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
@@ -86,10 +82,7 @@ const popupFormAvatar = new PopupWithForm(".popup_type_avatar", (objInputs) => {
   api
     .patchAvatar(objInputs.avatarProfile)
     .then((result) => {
-      infoUser.setUserInfo({
-        ...infoUser.getUserInfo(),
-        avatar: result.avatar,
-      });
+      infoUser.setUserInfo(result);
       popupFormAvatar.close();
     })
     .catch((err) => console.log(`Ошибка: ${err}`))
