@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); 
 module.exports = {
-  entry: { main: "./src/components/index.js" }, // указали первое место, куда заглянет webpack, — файл index.js в папке src
+  entry: { main: "./src/pages/index.js" }, // указали первое место, куда заглянет webpack, — файл index.js в папке src
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js", // указали в какой файл будет собираться весь js и дали ему имя
