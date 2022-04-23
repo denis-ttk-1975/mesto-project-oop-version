@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AvaveryU/mesto-project.git"
+    "url": "git+https://https://github.com/denis-ttk-1975/mesto-project-oop-version.git"
   },
   "author": "Averyanova Juliya",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AvaveryU/mesto-project/issues"
+    "url": "https://https://github.com/denis-ttk-1975/mesto-project-oop-version/issues"
   },
-  "homepage": "https://github.com/AvaveryU/mesto-project#readme",
+  "homepage": "https://https://github.com/denis-ttk-1975/mesto-project-oop-version#readme",
   "devDependencies": {
     "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
